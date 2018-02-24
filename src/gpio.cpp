@@ -60,11 +60,11 @@ void Controller::setAlternate(uint8_t pin, uint8_t alternate)
 {
 	if(pin >= 8)
 	{
+		memory(port)->AFR[1] &= ~(0xffu << ((pin - 8) * 4));
+		memory(port)->AFR[1] |= alternate << ((pin - 8) * 4);
+	} else {
 		memory(port)->AFR[0] &= ~(0xffu << (pin * 4));
 		memory(port)->AFR[0] |= alternate << (pin * 4);
-	} else {
-		memory(port)->AFR[1] &= ~(0xffu << (pin * 4));
-		memory(port)->AFR[1] |= alternate << (pin * 4);
 	}
 }
 
