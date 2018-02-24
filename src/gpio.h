@@ -16,7 +16,7 @@ namespace GPIO
 
 	enum class Mode : uint8_t
 	{
-		INPUT, OUTPUT, ALTERNATIVE, ANALOG
+		INPUT, OUTPUT, ALTERNATE, ANALOG
 	};
 
 	enum class OutputType : uint8_t
@@ -63,6 +63,7 @@ namespace GPIO
 			void setMode(Mode mode) { controller().setMode(pin, mode); }
 			void setType(OutputType type) { controller().setOutputType(pin, type); }
 			void setSpeed(OutputSpeed speed) { controller().setOutputSpeed(pin, speed); }
+			void setAlternate(uint8_t alternate) { controller().setAlternate(pin, alternate); }
 
 			void set() { controller().set(pin); }
 			void clear() { controller().clear(pin); }
