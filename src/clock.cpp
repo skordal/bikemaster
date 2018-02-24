@@ -26,6 +26,7 @@ void Clock::initialize()
 
 	// Configure and enable the SAI PLL:
 	RCC->PLLSAICFGR = 0
+		| 1u << RCC_PLLSAICFGR_PLLSAIP_Pos    // Setting 1 corresponds to P = 4
 		| 5u << RCC_PLLSAICFGR_PLLSAIR_Pos    // R = 5
 		| 2u << RCC_PLLSAICFGR_PLLSAIQ_Pos    // Q = 2 (not used)
 		| 192u << RCC_PLLSAICFGR_PLLSAIN_Pos; // N = 192
