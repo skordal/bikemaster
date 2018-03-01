@@ -8,4 +8,10 @@
 // Delay timer IRQ priority
 #define CONFIG_DELAY_TIMER_IRQ_PRIORITY 8
 
+// Framebuffer addresses:
+#define CONFIG_FRAMEBUFFER_WIDTH		480
+#define CONFIG_FRAMEBUFFER_HEIGHT		272
+#define CONFIG_FRAMEBUFFER_ADDRESS(n)	reinterpret_cast<void *>(\
+	0xc0000000 + (n * sizeof(StaticFramebuffer<CONFIG_FRAMEBUFFER_WIDTH, CONFIG_FRAMEBUFFER_HEIGHT>)))
+
 #endif
