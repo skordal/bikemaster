@@ -41,6 +41,15 @@ void LCDLayer::enable(unsigned int x, unsigned int y, unsigned int w, unsigned i
 	LCD::get().reload();
 }
 
+void LCDLayer::setFramebuffer(Framebuffer *fb)
+{
+	this->fb = fb;
+	layerMem(index)->CFBAR = reinterpret_cast<uint32_t>(fb->getBuffer());
+	layerMem(index)->CFBLR = fb->getWidth() * sizeof(Color) << LTDC_LxCFBLR_CFBP_Pos
+		| (fb->getWidth() * sizeof(Color) + 3) << LTDC_LxCFBLR_CFBLL_Pos;
+	LCD::get().reload();
+}
+
 LCD & LCD::get()
 {
 	static LCD controller;
@@ -121,5 +130,5 @@ void LCD::setupGPIOs()
 
 void LCD::reload()
 {
-	LTDC->SRCR = 1;
+	LTDC->SRCR = LTDC_SRCR_VBR;
 }
