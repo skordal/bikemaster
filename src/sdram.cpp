@@ -12,30 +12,30 @@
 #define FMC				FMC_Bank5_6
 
 // Alternative function code for FMC/SDRAM pins:
-#define GPIO_AF_SDRAM	12
+#define GPIO_AF_SDRAM	12u
 
 void SDRAM::setupGPIOs()
 {
 	GPIO::Pin pins[]{
-		// Port C:
-		{3, GPIO::Port::C},
-		// Port D:
-		{0, GPIO::Port::D}, {1, GPIO::Port::D}, {8, GPIO::Port::D}, {9, GPIO::Port::D},
-		{10, GPIO::Port::D}, {14, GPIO::Port::D}, {15, GPIO::Port::D},
-		// Port E:
-		{0, GPIO::Port::E}, {1, GPIO::Port::E}, {7, GPIO::Port::E}, {8, GPIO::Port::E},
-		{9, GPIO::Port::E}, {10, GPIO::Port::E}, {11, GPIO::Port::E}, {12, GPIO::Port::E},
-		{13, GPIO::Port::E}, {14, GPIO::Port::E}, {15, GPIO::Port::E},
-		// Port F:
-		{0, GPIO::Port::F}, {1, GPIO::Port::F}, {2, GPIO::Port::F}, {3, GPIO::Port::F},
-		{4, GPIO::Port::F}, {5, GPIO::Port::F}, {11, GPIO::Port::F}, {12, GPIO::Port::F},
-		{13, GPIO::Port::F}, {14, GPIO::Port::F}, {15, GPIO::Port::F},
-		// Port G:
-		{0, GPIO::Port::G}, {1, GPIO::Port::G}, {4, GPIO::Port::G}, {5, GPIO::Port::G},
-		{8, GPIO::Port::G}, {15, GPIO::Port::G},
-		// Port H:
-		{3, GPIO::Port::H}, {5, GPIO::Port::H},
-	};
+			// Port C:
+			{3, GPIO::Port::C},
+			// Port D:
+			{0, GPIO::Port::D}, {1, GPIO::Port::D}, {8, GPIO::Port::D}, {9, GPIO::Port::D},
+			{10, GPIO::Port::D}, {14, GPIO::Port::D}, {15, GPIO::Port::D},
+			// Port E:
+			{0, GPIO::Port::E}, {1, GPIO::Port::E}, {7, GPIO::Port::E}, {8, GPIO::Port::E},
+			{9, GPIO::Port::E}, {10, GPIO::Port::E}, {11, GPIO::Port::E}, {12, GPIO::Port::E},
+			{13, GPIO::Port::E}, {14, GPIO::Port::E}, {15, GPIO::Port::E},
+			// Port F:
+			{0, GPIO::Port::F}, {1, GPIO::Port::F}, {2, GPIO::Port::F}, {3, GPIO::Port::F},
+			{4, GPIO::Port::F}, {5, GPIO::Port::F}, {11, GPIO::Port::F}, {12, GPIO::Port::F},
+			{13, GPIO::Port::F}, {14, GPIO::Port::F}, {15, GPIO::Port::F},
+			// Port G:
+			{0, GPIO::Port::G}, {1, GPIO::Port::G}, {4, GPIO::Port::G}, {5, GPIO::Port::G},
+			{8, GPIO::Port::G}, {15, GPIO::Port::G},
+			// Port H:
+			{3, GPIO::Port::H}, {5, GPIO::Port::H},
+		};
 
 	for(GPIO::Pin & pin : pins)
 	{
