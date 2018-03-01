@@ -48,7 +48,8 @@ int main()
 	LCD::get().enable();
 
 	// Initialize the GUI:
-	GUI::initialize(framebuffers);
+	GUI::get().initialize(framebuffers);
+	GUI::get().update();
 
 	// Turn on the status LED:
 	GPIO::Pin statusLED(1, GPIO::Port::I);

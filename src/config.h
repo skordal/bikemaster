@@ -7,6 +7,7 @@
 
 // Delay timer IRQ priority
 #define CONFIG_DELAY_TIMER_IRQ_PRIORITY 8
+#define CONFIG_GUI_REDRAW_IRQ_PRIORITY	15
 
 // Framebuffer addresses:
 #define CONFIG_FRAMEBUFFER_WIDTH		480
