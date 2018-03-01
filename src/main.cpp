@@ -3,11 +3,18 @@
 // Report bugs and issues on <https://github.com/skordal/bikemaster/issues>
 
 #include <stm32f7xx.h>
+#include <new>
 
 #include "clock.h"
+#include "config.h"
 #include "debug.h"
+#include "framebuffer.h"
 #include "gpio.h"
+#include "gui.h"
+#include "lcd.h"
 #include "sdram.h"
+
+static Framebuffer * framebuffers[2];
 
 int main()
 {
@@ -24,7 +31,7 @@ int main()
 	FPU->FPCCR |= FPU_FPCCR_ASPEN_Msk | FPU_FPCCR_LSPEN_Msk;
 	__DSB(); __ISB();
 
-	// Enable interrupts, some initialization procedures use interrupts early on:
+	// Enable interrupts early, since some initialization procedures use interrupts:
 	__enable_irq();
 
 	// Set up all the clocks:
@@ -32,6 +39,16 @@ int main()
 
 	// Enable the external SDRAM:
 	SDRAM::initialize();
+
+	// Create framebuffers in SDRAM:
+	framebuffers[0] = new (CONFIG_FRAMEBUFFER_ADDRESS(0)) StaticFramebuffer<480, 272>;
+    framebuffers[1] = new (CONFIG_FRAMEBUFFER_ADDRESS(1)) StaticFramebuffer<480, 272>;
+
+	// Initialize the LCD:
+	LCD::get().enable();
+
+	// Initialize the GUI:
+	GUI::initialize(framebuffers);
 
 	// Turn on the status LED:
 	GPIO::Pin statusLED(1, GPIO::Port::I);
