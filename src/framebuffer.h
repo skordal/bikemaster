@@ -8,6 +8,7 @@
 #include <cstring>
 
 #include "color.h"
+#include "point.h"
 
 class Framebuffer
 {
@@ -19,6 +20,9 @@ class Framebuffer
 
 		virtual Color * getBuffer() = 0;
 		virtual const Color * getBuffer() const = 0;
+
+		void setPixel(const Point & pos, const Color & color);
+		const Color & getPixel(const Point & pos) const;
 };
 
 template<unsigned int W, unsigned int H>
