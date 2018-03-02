@@ -40,19 +40,42 @@ Font::Font(const LUT<wchar_t, const Glyph *> & glyphTable)
 
 }
 
+unsigned int Font::getWidth(const wchar_t * text) const
+{
+	unsigned int retval = 0;
+	for(unsigned int i = 0; text[i] != 0; ++i)
+	{
+		if(text[i] == ' ')
+		{
+			retval += WHITESPACE_WIDTH;
+			continue;
+		}
+
+		const Glyph * current = &unknownGlyph;
+		glyphTable.get(text[i], &current);
+
+		retval += current->getWidth() + CHARACTER_SPACING;
+	}
+
+	return retval;
+}
+
 void Font::render(Framebuffer & fb, const Point & pos, const wchar_t * text, const Color & color) const
 {
 	unsigned int offsetX = 0;
 
 	for(unsigned int i = 0; text[i] != 0; ++i)
 	{
-		const Glyph * currentGlyph = nullptr;
-		if(!glyphTable.get(text[i], &currentGlyph))
+		if(text[i] == ' ')
 		{
-			currentGlyph = &unknownGlyph;
+			offsetX += WHITESPACE_WIDTH;
+			continue;
 		}
 
-		currentGlyph->render(fb, pos.offset(offsetX, 0), color);
-		offsetX += currentGlyph->getWidth() + CHARACTER_SPACING;
+		const Glyph * current = &unknownGlyph;
+		glyphTable.get(text[i], &current);
+
+		current->render(fb, pos.offset(offsetX, 0), color);
+		offsetX += current->getWidth() + CHARACTER_SPACING;
 	}
 }

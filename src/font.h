@@ -10,15 +10,17 @@
 #include "lut.h"
 #include "point.h"
 
-class Font
+class Font final
 {
 	public:
 		static Font & getDefault();
 
-		Font(const LUT<wchar_t, const Glyph *> & glyphTable);
+		unsigned int getHeight() const { return 20; }
+		unsigned int getWidth(const wchar_t * text) const;
 
 		void render(Framebuffer & fb, const Point & pos, const wchar_t * text, const Color & color = Color::white()) const;
 	private:
+		Font(const LUT<wchar_t, const Glyph *> & glyphTable);
 		const LUT<wchar_t, const Glyph *> & glyphTable;
 
 		static const unsigned int WHITESPACE_WIDTH = 10;
