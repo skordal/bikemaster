@@ -6,15 +6,17 @@
 #define COLOR_H
 
 #include <cstdint>
+#include <cstring>
 
 class Color final
 {
 	public:
-		static Color black() { return Color(  0,   0,   0); }
-		static Color white() { return Color(255, 255, 255); }
-		static Color red()   { return Color(255,   0,   0); }
-		static Color green() { return Color(  0, 255,   0); }
-		static Color blue()  { return Color(  0,   0, 255); }
+		static Color black()       { return Color(  0,   0,   0); }
+		static Color white()       { return Color(255, 255, 255); }
+		static Color red()         { return Color(255,   0,   0); }
+		static Color green()       { return Color(  0, 255,   0); }
+		static Color blue()        { return Color(  0,   0, 255); }
+		static Color transparent() { return Color(  0,   0,   0,   0); }
 
 		Color(uint8_t r = 0, uint8_t g = 0, uint8_t b = 0, uint8_t a = 255)
 			: b(b), g(g), r(r), a(a) {}
@@ -33,6 +35,9 @@ class Color final
 			{ this->r = r; this->g = g; this->b = b; this->a = a; }
 		void set(const Color & color)
 			{ r = color.getR(); g = color.getG(); b = color.getB(); a = color.getA(); }
+
+		bool operator==(const Color & c) const { return memcmp(this, &c, sizeof(Color)) == 0; }
+		bool operator!=(const Color & c) const { return !(c == *this); }
 	private:
 		uint8_t b, g, r, a;
 };
