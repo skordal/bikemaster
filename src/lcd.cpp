@@ -22,10 +22,10 @@ void LCDLayer::enable(unsigned int x, unsigned int y, unsigned int w, unsigned i
 	const unsigned int firstPixelX = ((LTDC->BPCR & LTDC_BPCR_AHBP_Msk) >> LTDC_BPCR_AHBP_Pos) + 1;
 	const unsigned int firstPixelY = ((LTDC->BPCR & LTDC_BPCR_AVBP_Msk) >> LTDC_BPCR_AVBP_Pos) + 1;
 	const unsigned int startX = firstPixelX + x;
- 	const unsigned int endX = startX + w;
+	const unsigned int endX = startX + w - 1;
 
 	const unsigned int startY = firstPixelY + y;
-	const unsigned int endY = startY + h;
+	const unsigned int endY = startY + h - 1;
 
 	layerMem(index)->CR &= ~LTDC_LxCR_LEN_Msk;
 	layerMem(index)->WHPCR = endX << LTDC_LxWHPCR_WHSPPOS_Pos
