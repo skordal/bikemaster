@@ -6,6 +6,7 @@
 #define LCD_H
 
 #include "config.h"
+#include "color.h"
 #include "framebuffer.h"
 
 class LCDLayer final
@@ -33,6 +34,8 @@ class LCD final
 		LCDLayer & getLayer(unsigned int layer) { return layers[layer]; }
 		void enable();
 		void disable();
+
+		void setBackgroundColor(const Color & bg);
 	private:
 		LCD();
 		void initialize();

@@ -69,6 +69,15 @@ void LCD::disable()
 	LTDC->GCR &= ~LTDC_GCR_LTDCEN;
 }
 
+void LCD::setBackgroundColor(const Color & bg)
+{
+	LTDC->BCCR = 0
+		| bg.getR() << LTDC_BCCR_BCRED_Pos
+		| bg.getG() << LTDC_BCCR_BCGREEN_Pos
+		| bg.getB() << LTDC_BCCR_BCBLUE_Pos;
+	reload();
+}
+
 LCD::LCD() : initialized(false)
 {
 
