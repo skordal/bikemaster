@@ -8,11 +8,19 @@
 #include "clock.h"
 #include "config.h"
 #include "debug.h"
+#include "font.h"
 #include "framebuffer.h"
 #include "gpio.h"
 #include "gui.h"
 #include "lcd.h"
 #include "sdram.h"
+
+#include "initscreen.h"
+
+namespace Screens
+{
+	static InitScreen init;
+};
 
 static Framebuffer * framebuffers[2];
 
@@ -41,15 +49,18 @@ int main()
 	SDRAM::initialize();
 
 	// Create framebuffers in SDRAM:
-	framebuffers[0] = new (CONFIG_FRAMEBUFFER_ADDRESS(0)) StaticFramebuffer<480, 272>;
-    framebuffers[1] = new (CONFIG_FRAMEBUFFER_ADDRESS(1)) StaticFramebuffer<480, 272>;
+	framebuffers[0] = new (CONFIG_FRAMEBUFFER_ADDRESS(0))
+		StaticFramebuffer<CONFIG_FRAMEBUFFER_WIDTH, CONFIG_FRAMEBUFFER_HEIGHT>;
+    framebuffers[1] = new (CONFIG_FRAMEBUFFER_ADDRESS(1))
+		StaticFramebuffer<CONFIG_FRAMEBUFFER_WIDTH, CONFIG_FRAMEBUFFER_HEIGHT>;
 
 	// Initialize the LCD:
 	LCD::get().enable();
 
 	// Initialize the GUI:
 	GUI::get().initialize(framebuffers);
-	GUI::get().update();
+	GUI::get().setScreen(&Screens::init);
+	GUI::get().update(); // Display the GUI
 
 	// Turn on the status LED:
 	GPIO::Pin statusLED(1, GPIO::Port::I);
