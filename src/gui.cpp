@@ -26,11 +26,12 @@ void GUI::initialize(Framebuffer * framebuffers[2])
 	this->framebuffers[0] = framebuffers[0];
     this->framebuffers[1] = framebuffers[1];
 
-	frontbuffer().clear();
-	backbuffer().clear();
+	frontbuffer().clear(Color::transparent());
+	backbuffer().clear(Color::transparent());
 
 	LCD::get().getLayer(0).enable(0, 0, CONFIG_FRAMEBUFFER_WIDTH, CONFIG_FRAMEBUFFER_HEIGHT,
 		framebuffers[activeFramebuffer]);
+	LCD::get().setBackgroundColor(currentBackground);
 
 	// Enable the DMA2D accelerator:
 	RCC->AHB1ENR |= RCC_AHB1ENR_DMA2DEN;
@@ -54,7 +55,16 @@ void GUI::renderAll()
 		return;
 
 	if(currentScreen != nullptr)
+	{
+		if(currentBackground != currentScreen->getBackground())
+		{
+			currentBackground = currentScreen->getBackground();
+			LCD::get().setBackgroundColor(currentBackground);
+		}
+
+		backbuffer().clear(Color::transparent());
 		currentScreen->render(backbuffer());
+	}
 	swapBuffers();
 }
 

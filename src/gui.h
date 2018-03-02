@@ -29,6 +29,7 @@ class GUI final
 		Framebuffer & backbuffer() { return *framebuffers[activeFramebuffer ^ 1]; }
 
 		Screen * currentScreen;
+		Color currentBackground = Color::black();
 
 		Framebuffer * framebuffers[2];
 		unsigned int activeFramebuffer;
