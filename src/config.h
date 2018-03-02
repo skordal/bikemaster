@@ -5,6 +5,9 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+// GUI language:
+#define CONFIG_GUI_LANGUAGE	Strings::Language::NORWEGIAN
+
 // Delay timer IRQ priority
 #define CONFIG_DELAY_TIMER_IRQ_PRIORITY 8
 #define CONFIG_GUI_REDRAW_IRQ_PRIORITY	15
