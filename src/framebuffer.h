@@ -26,16 +26,16 @@ class Framebuffer
 };
 
 template<unsigned int W, unsigned int H>
-class StaticFramebuffer : public Framebuffer
+class StaticFramebuffer final : public Framebuffer
 {
 	public:
 		StaticFramebuffer() : Framebuffer() {}
 
-		unsigned int getWidth() const { return W; }
-		unsigned int getHeight() const { return H; }
+		unsigned int getWidth() const override { return W; }
+		unsigned int getHeight() const override { return H; }
 
-		Color * getBuffer() { return buffer; }
-		const Color * getBuffer() const { return buffer; }
+		Color * getBuffer() override { return buffer; }
+		const Color * getBuffer() const override { return buffer; }
 	private:
 		Color buffer[W * H];
 };
