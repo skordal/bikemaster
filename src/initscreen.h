@@ -11,8 +11,7 @@
 class InitScreen : public Screen
 {
 	public:
-		void render(Framebuffer & fb);
-		Color getBackground() const { return Color(0, 0, 35); }
+		void render(Framebuffer & fb) override;
 };
 
 #endif
