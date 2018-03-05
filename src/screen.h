@@ -11,7 +11,7 @@ class Screen
 {
 	public:
 		virtual void render(Framebuffer & fb) = 0;
-		virtual Color getBackground() const { return Color(0, 0, 35); }
+		virtual Color getBackground() const { return Color::black(); }
 };
 
 #endif
