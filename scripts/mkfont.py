@@ -132,22 +132,22 @@ characters = {
         ""
     ],
     'H': [
-        "X     X",
-        "X     X",
-        "X     X",
-        "X     X",
-        "X     X", #
-        "X     X",
-        "X     X",
-        "XXXXXXX",
-        "X     X",
-        "X     X",
-        "X     X",
-        "X     X",
-        "X     X",
-        "X     X",
-        "X     X",
-        "X     X", #
+        "X      X",
+        "X      X",
+        "X      X",
+        "X      X",
+        "X      X", #
+        "X      X",
+        "X      X",
+        "XXXXXXXX",
+        "X      X",
+        "X      X",
+        "X      X",
+        "X      X",
+        "X      X",
+        "X      X",
+        "X      X",
+        "X      X", #
     ],
     'I': [
         "XXX",
@@ -563,10 +563,6 @@ characters = {
         "  X",
         "  X",
         "  X", #
-        "",
-        "",
-        "",
-        ""
     ],
     '2': [
         "  XXX",
@@ -1306,11 +1302,25 @@ characters = {
         "",
         "XX",
         "XX", #
-        "",
-        "",
-        "",
-        ""
     ],
+    ':': [
+        "",
+        "",
+        "",
+        "",
+        "", #
+        "",
+        "XX",
+        "XX",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "XX",
+        "XX",
+        "", #
+    ]
 }
 
 charnames = {
@@ -1383,7 +1393,8 @@ charnames = {
     '8': '8',
     '9': '9',
     '/': 'slash',
-    '.': 'period'
+    '.': 'period',
+    ':': 'colon'
 }
 
 def write_header(f):
