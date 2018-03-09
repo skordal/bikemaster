@@ -824,14 +824,14 @@ characters = {
         "",
         "",
         "",
-        "  XXX",
-        " X   X",
-        "X     X",
-        "XXXXXX",
+        "  XX",
+        " X  X",
+        "X    X",
+        "XXXXX",
         "X",
-        "X     X",
-        " X   X",
-        "  XXX", #
+        "X    X",
+        " X  X",
+        "  XX", #
     ],
     'f': [
         "",
@@ -1113,9 +1113,9 @@ characters = {
         "", #
         "",
         "",
-        "",
         " X",
         "XXX",
+        " X",
         " X",
         " X",
         " X",
