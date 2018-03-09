@@ -9,13 +9,3 @@ void Framebuffer::clear(const Color & clearColor)
 	for(unsigned int i = 0; i < getWidth() * getHeight(); i++)
 		getBuffer()[i].set(clearColor);
 }
-
-void Framebuffer::setPixel(const Point & pos, const Color & color)
-{
-	getBuffer()[pos.getY() * getWidth() + pos.getX()] = color;
-}
-
-const Color & Framebuffer::getPixel(const Point & pos) const
-{
-	return getBuffer()[pos.getY() * getWidth() + pos.getX()];
-}

@@ -21,8 +21,10 @@ class Framebuffer
 		virtual Color * getBuffer() = 0;
 		virtual const Color * getBuffer() const = 0;
 
-		void setPixel(const Point & pos, const Color & color);
-		const Color & getPixel(const Point & pos) const;
+		void setPixel(const Point & pos, const Color & color)
+			{ getBuffer()[pos.getY() * getWidth() + pos.getX()] = color; }
+		const Color & getPixel(const Point & pos) const
+			{ return getBuffer()[pos.getY() * getWidth() + pos.getX()]; }
 };
 
 template<unsigned int W, unsigned int H>
@@ -37,7 +39,7 @@ class StaticFramebuffer final : public Framebuffer
 		Color * getBuffer() override { return buffer; }
 		const Color * getBuffer() const override { return buffer; }
 	private:
-		Color buffer[W * H];
+		Color buffer[W * H] __attribute((aligned(4)));
 };
 
 #endif

@@ -36,6 +36,7 @@ void LCDLayer::enable(unsigned int x, unsigned int y, unsigned int w, unsigned i
 	layerMem(index)->CFBLR = fb->getWidth() * sizeof(Color) << LTDC_LxCFBLR_CFBP_Pos
 		| (fb->getWidth() * sizeof(Color) + 3) << LTDC_LxCFBLR_CFBLL_Pos;
 	layerMem(index)->CFBLNR = h;
+	layerMem(index)->PFCR = 1; // RGB8888
 	layerMem(index)->CR |= LTDC_LxCR_LEN;
 
 	LCD::get().reload();
