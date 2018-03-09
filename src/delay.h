@@ -12,6 +12,6 @@
  * Uses timer10 to do interrupt-driven waiting.
  * @param msec Duration to wait for, in μs.
  */
-void delay(uint16_t msec);
+void delay(uint16_t usec);
 
 #endif

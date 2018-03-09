@@ -19,7 +19,7 @@ extern "C" void TIM1_UP_TIM10_IRQHandler()
 	}
 }
 
-void delay(uint16_t msec)
+void delay(uint16_t usec)
 {
 	// Enable timer 10 clock:
 	RCC->APB2ENR |= RCC_APB2ENR_TIM10EN;
@@ -27,7 +27,7 @@ void delay(uint16_t msec)
 	// Configure the timer:
 	TIM10->CNT = 0;             // Set the counter to 0
 	TIM10->PSC = 199;           // Set the prescaler to 200, generating a 1 μs clock
-	TIM10->ARR = msec;          // Set the target value
+	TIM10->ARR = usec;          // Set the target value
 	TIM10->DIER = TIM_DIER_UIE; // Enable interrupt on update event
 	TIM10->CR1 = TIM_CR1_URS | TIM_CR1_CEN | TIM_CR1_OPM;
 
