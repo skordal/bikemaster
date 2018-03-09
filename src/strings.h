@@ -20,9 +20,15 @@ class Strings final
 		enum class ID
 		{
 			INITIALIZING = 0,
+			SPEED,
+            SPEED_UNIT,
+			DISTANCE,
+			DISTANCE_UNIT,
 		};
 
 		static const wchar_t * get(ID id, Language language);
+		static void formatSpeedString(float speed, wchar_t * buffer, Strings::Language language);
+		static void formatDistanceString(float speed, wchar_t * buffer, Strings::Language language);
 };
 
 #endif
