@@ -12,9 +12,6 @@ void Framebuffer::clear(const Color & clearColor)
 
 void Framebuffer::setPixel(const Point & pos, const Color & color)
 {
-	if(pos.getX() >= getWidth() || pos.getY() >= getHeight())
-		return;
-
 	getBuffer()[pos.getY() * getWidth() + pos.getX()] = color;
 }
 
