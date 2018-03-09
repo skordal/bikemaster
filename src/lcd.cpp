@@ -17,6 +17,13 @@ static constexpr LTDC_Layer_TypeDef * layerMem(unsigned int i)
 	return i == 0 ? LTDC_Layer1 : LTDC_Layer2;
 }
 
+extern "C" void LTDC_IRQHandler()
+{
+	LTDC->ICR = LTDC_ICR_CRRIF;
+	if(LCD::get().listener != nullptr)
+		LCD::get().listener->onLCDUpdated();
+}
+
 void LCDLayer::enable(unsigned int x, unsigned int y, unsigned int w, unsigned int h, Framebuffer * fb)
 {
 	const unsigned int firstPixelX = ((LTDC->BPCR & LTDC_BPCR_AHBP_Msk) >> LTDC_BPCR_AHBP_Pos) + 1;
@@ -100,6 +107,10 @@ void LCD::initialize()
 	LTDC->AWCR = 523u << LTDC_AWCR_AAW_Pos | 284u << LTDC_AWCR_AAH_Pos;
 	LTDC->TWCR = 531u << LTDC_TWCR_TOTALW_Pos | 288u << LTDC_TWCR_TOTALH_Pos;
 #endif
+
+	LTDC->IER |= LTDC_IER_RRIE;
+	NVIC_SetPriority(LTDC_IRQn, CONFIG_LCD_IRQ_PRIORITY);
+	NVIC_EnableIRQ(LTDC_IRQn);
 
 	initialized = true;
 }

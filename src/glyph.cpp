@@ -20,7 +20,7 @@ void Glyph::render(Framebuffer & fb, const Point & pos, const Color & color) con
 		for(unsigned int x = 0; x < width; ++x)
 		{
 			Color pixelColor(color);
-			pixelColor.setA(data[y * width + x]);
+			//pixelColor.setA(data[y * width + x]);
 			if(data[y * width + x] != 0)
 				fb.setPixel(Point(startX + x, startY + y), pixelColor);
 		}

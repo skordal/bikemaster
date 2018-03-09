@@ -6,11 +6,14 @@
 #define GUI_H
 
 #include "framebuffer.h"
+#include "lcd.h"
 #include "screen.h"
 
 extern "C" void EXTI0_IRQHandler();
+extern "C" void TIM2_IRQHandler();
+extern "C" void DMA2D_IRQHandler();
 
-class GUI final
+class GUI final : private LCDUpdateListener
 {
 	public:
 		static GUI & get();
@@ -23,6 +26,9 @@ class GUI final
 		GUI() : framebuffers{nullptr, nullptr}, activeFramebuffer(0), initialized(false) {}
 
 		void renderAll();
+		void animate();
+
+        void onLCDUpdated() override;
 
 		void swapBuffers();
 		Framebuffer & frontbuffer() { return *framebuffers[activeFramebuffer]; }
@@ -32,10 +38,16 @@ class GUI final
 		Color currentBackground = Color::black();
 
 		Framebuffer * framebuffers[2];
-		unsigned int activeFramebuffer;
+		unsigned int activeFramebuffer = 0;
+
+		volatile enum { STATE_WAIT_FOR_VSYNC, STATE_WAIT_FOR_CLEAR, STATE_READY } state = STATE_READY;
+		volatile bool updatePending = false;
 
 		bool initialized;
+
 	friend void ::EXTI0_IRQHandler();
+	friend void ::TIM2_IRQHandler();
+	friend void ::DMA2D_IRQHandler();
 };
 
 #endif

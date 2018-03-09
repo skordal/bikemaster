@@ -9,6 +9,8 @@
 #include "color.h"
 #include "framebuffer.h"
 
+extern "C" void LTDC_IRQHandler();
+
 class LCDLayer final
 {
 	public:
@@ -26,6 +28,12 @@ class LCDLayer final
 	friend class LCD;
 };
 
+class LCDUpdateListener
+{
+	public:
+		virtual void onLCDUpdated() = 0;
+};
+
 class LCD final
 {
 	public:
@@ -36,6 +44,8 @@ class LCD final
 		void disable();
 
 		void setBackgroundColor(const Color & bg);
+
+		void setListener(LCDUpdateListener * listener) { this->listener = listener; }
 	private:
 		LCD();
 		void initialize();
@@ -46,7 +56,11 @@ class LCD final
 
 		bool initialized = false;
 		LCDLayer layers[2]{0, 1};
+		LCDUpdateListener * listener = nullptr;
+
 	friend class LCDLayer;
+	friend class LCDUpdateListener;
+	friend void LTDC_IRQHandler();
 };
 
 #endif

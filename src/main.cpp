@@ -17,10 +17,12 @@
 #include "sdram.h"
 
 #include "initscreen.h"
+#include "mainscreen.h"
 
 namespace Screens
 {
 	static InitScreen init;
+	static MainScreen main;
 };
 
 static Framebuffer * framebuffers[2];
@@ -50,12 +52,16 @@ int main()
 	// Initialize the LCD:
 	LCD::get().enable();
 
-	// Initialize the GUI:
+	// Initialize the GUI and show the initialization screen:
 	GUI::get().initialize(framebuffers);
 	GUI::get().setScreen(&Screens::init);
-	GUI::get().update(); // Display the GUI
+	GUI::get().update();
 
-	// Turn on the status LED:
+	// Switch to the main screen:
+	GUI::get().setScreen(&Screens::main);
+	GUI::get().update();
+
+    // Turn on the status LED:
 	GPIO::Pin statusLED(1, GPIO::Port::I);
 	statusLED.setMode(GPIO::Mode::OUTPUT);
 	statusLED.clear(); // The LED is active-low.
