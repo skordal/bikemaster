@@ -6,17 +6,19 @@
 #define CONFIG_H
 
 // GUI language:
-#define CONFIG_GUI_LANGUAGE	Strings::Language::NORWEGIAN
+#define CONFIG_GUI_LANGUAGE	Strings::Language::ENGLISH
 
 // Maximum speed for the GUI:
 #define CONFIG_GUI_MAXSPEED				50 // km/h
 
 // Delay timer IRQ priority
+#define CONFIG_SENSOR_TIMER_IRQ_PRIORITY     5
+#define CONFIG_SENSOR_IRQ_PRIORITY			13
 #define CONFIG_DELAY_TIMER_IRQ_PRIORITY		 8 // This value does not really matter
 #define CONFIG_LCD_IRQ_PRIORITY				10
 #define CONFIG_DMA2D_IRQ_PRIORITY			11
 #define CONFIG_GUI_REDRAW_IRQ_PRIORITY		12
-#define CONFIG_ANIMATION_TIMER_IRQ_PRIORITY	13
+#define CONFIG_ANIMATION_TIMER_IRQ_PRIORITY	14
 
 // Framebuffer addresses:
 #define CONFIG_FRAMEBUFFER_WIDTH		480

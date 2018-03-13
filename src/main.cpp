@@ -15,6 +15,7 @@
 #include "lcd.h"
 #include "processor.h"
 #include "sdram.h"
+#include "sensor.h"
 
 #include "initscreen.h"
 #include "mainscreen.h"
@@ -56,6 +57,9 @@ int main()
 	GUI::get().initialize(framebuffers);
 	GUI::get().setScreen(&Screens::init);
 	GUI::get().update();
+
+	// Initialize the wheel sensor module:
+	Sensor::get();
 
 	// Switch to the main screen:
 	GUI::get().setScreen(&Screens::main);
