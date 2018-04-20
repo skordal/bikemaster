@@ -19,17 +19,15 @@ class MainScreen final : public Screen
 		void drawNeedle(Framebuffer & fb, float radiusInner, float radiusOuter);
 		void drawText(Framebuffer & fb);
 
-		float distance = 5224.2f;
-
-		float speed = 32.8f;
+		float distance = 0.0f;
+		float speed = 0.0f;
 
 		float needleValue = 0.0f;
-		float needleTarget = speed;
 		float needleSpeed = 0.0f;
 
 		static constexpr const float NEEDLE_ACCELERATION = 0.1f;
 		static constexpr const float NEEDLE_MAX_SPEED = 1.0f;
-		static constexpr const float NEEDLE_MARGIN = 1.0f;
+		static constexpr const float NEEDLE_MARGIN = 0.25f;
 
 		static const unsigned int SPEEDOMETER_WIDTH = 85;
 

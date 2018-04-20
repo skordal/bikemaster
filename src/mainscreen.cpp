@@ -3,11 +3,12 @@
 // Report bugs and issues on <https://github.com/skordal/bikemaster/issues>
 
 #include <cmath>
-#include <cstdio>
+#include <cross_studio_io.h>
 
 #include "config.h"
 #include "font.h"
 #include "mainscreen.h"
+#include "sensor.h"
 #include "statistics.h"
 #include "strings.h"
 #include "utils.h"
@@ -20,12 +21,15 @@ const Color MainScreen::NEEDLE_COLOR(255, 0, 0);
 
 void MainScreen::animate()
 {
+	speed = Sensor::get().getSpeed();
+	distance = Sensor::get().getDistance();
+
 	if(needleValue < speed - NEEDLE_MARGIN)
 	{
-		if(needleSpeed == 0.0f)
-			needleSpeed = NEEDLE_ACCELERATION;
-		else if(needleSpeed < NEEDLE_MAX_SPEED)
+		if(needleSpeed > 0.0f && needleSpeed < NEEDLE_MAX_SPEED)
 			needleSpeed += NEEDLE_ACCELERATION;
+		else
+			needleSpeed = NEEDLE_ACCELERATION;
 
 		if(needleValue + needleSpeed > speed)
 			needleValue = speed;
@@ -33,12 +37,12 @@ void MainScreen::animate()
 			needleValue += needleSpeed;
 	} else if(needleValue > speed + NEEDLE_MARGIN)
 	{
-		if(needleSpeed == 0.0f)
-			needleSpeed = -NEEDLE_ACCELERATION;
-		else if(needleSpeed > -NEEDLE_MAX_SPEED)
+		if(needleSpeed < 0.0f && needleSpeed > -NEEDLE_MAX_SPEED)
 			needleSpeed -= NEEDLE_ACCELERATION;
+		else
+			needleSpeed = NEEDLE_ACCELERATION;
 
-		if(needleValue - needleSpeed < speed)
+		if(needleValue - needleSpeed < speed || needleValue - needleSpeed <= 0.0f)
 			needleValue = speed;
 		else
 			needleValue -= needleSpeed;
@@ -72,11 +76,13 @@ void MainScreen::drawTickmarks(Framebuffer & fb, float radiusInner, float radius
 	const float majorInterval = M_PI / (CONFIG_GUI_MAXSPEED / 10.0f);
 	for(float angle = 0.0f; angle < M_PI; angle += majorInterval)
 	{
-		float startX = centerX + cosf(angle) * radiusInner;
-		float endX = centerX + cosf(angle) * radiusOuter;
+		float cosAngle = cosf(angle), sinAngle = sinf(angle);
 
-		float startY = centerY - sinf(angle) * radiusInner;
-		float endY = centerY - sinf(angle) * radiusOuter;
+		float startX = centerX + cosAngle * radiusInner;
+		float endX = centerX + cosAngle * radiusOuter;
+
+		float startY = centerY - sinAngle * radiusInner;
+		float endY = centerY - sinAngle * radiusOuter;
 
 		Utils::drawLine(fb, Point(startX, startY), Point(endX, endY), TICKMARK_COLOR);
 	}
@@ -90,13 +96,19 @@ void MainScreen::drawNeedle(Framebuffer & fb, float radiusInner, float radiusOut
 	const unsigned int centerX = (fb.getWidth() - 1) / 2;
 	const unsigned int centerY = fb.getHeight() - 1;
 
+	if(needleValue < 0.0f)
+		needleValue = 0.0f;
+	else if(needleValue >= CONFIG_GUI_MAXSPEED)
+		needleValue = CONFIG_GUI_MAXSPEED;
+
 	const float angle = M_PI - (M_PI / CONFIG_GUI_MAXSPEED) * needleValue;
 
-	float startX = centerX + cosf(angle) * radiusInner;
-	float endX = centerX + cosf(angle) * radiusOuter;
+	float cosAngle = cosf(angle), sinAngle = sinf(angle);
+	float startX = centerX + cosAngle * radiusInner;
+	float endX = centerX + cosAngle * radiusOuter;
 
-	float startY = centerY - sinf(angle) * radiusInner;
-	float endY = centerY - sinf(angle) * radiusOuter;
+	float startY = centerY - sinAngle * radiusInner;
+	float endY = centerY - sinAngle * radiusOuter;
 
 	Utils::drawLine(fb, Point(startX, startY), Point(endX, endY), NEEDLE_COLOR);
 }
