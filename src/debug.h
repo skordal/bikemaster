@@ -16,5 +16,7 @@ class Debug final
 };
 
 Debug & operator<<(Debug & stream, const char * string);
+Debug & operator<<(Debug & stream, unsigned int i);
+Debug & operator<<(Debug & stream, float f);
 
 #endif
