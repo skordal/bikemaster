@@ -12,8 +12,8 @@
 #define CONFIG_GUI_MAXSPEED				50 // km/h
 
 // Delay timer IRQ priority
-#define CONFIG_SENSOR_TIMER_IRQ_PRIORITY     5
-#define CONFIG_SENSOR_IRQ_PRIORITY			13
+#define CONFIG_SENSOR_IRQ_PRIORITY			 4
+#define CONFIG_SENSOR_TIMER_IRQ_PRIORITY	 5
 #define CONFIG_DELAY_TIMER_IRQ_PRIORITY		 8 // This value does not really matter
 #define CONFIG_LCD_IRQ_PRIORITY				10
 #define CONFIG_DMA2D_IRQ_PRIORITY			11
