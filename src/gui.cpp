@@ -13,8 +13,9 @@
 
 extern "C" void EXTI0_IRQHandler()
 {
+	GUI::get().renderAll();
 	EXTI->PR |= EXTI_PR_PR0;
-    GUI::get().renderAll();
+	(void) EXTI->PR;
 }
 
 extern "C" void TIM2_IRQHandler()
