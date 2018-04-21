@@ -9,7 +9,7 @@
 #define CONFIG_GUI_LANGUAGE	Strings::Language::ENGLISH
 
 // Maximum speed for the GUI:
-#define CONFIG_GUI_MAXSPEED				50 // km/h
+#define CONFIG_GUI_MAXSPEED					50 // km/h
 
 // Delay timer IRQ priority
 #define CONFIG_SENSOR_IRQ_PRIORITY			 4
@@ -21,9 +21,9 @@
 #define CONFIG_ANIMATION_TIMER_IRQ_PRIORITY	14
 
 // Framebuffer addresses:
-#define CONFIG_FRAMEBUFFER_WIDTH		480
-#define CONFIG_FRAMEBUFFER_HEIGHT		272
-#define CONFIG_FRAMEBUFFER_ADDRESS(n)	reinterpret_cast<void *>(\
+#define CONFIG_FRAMEBUFFER_WIDTH			480
+#define CONFIG_FRAMEBUFFER_HEIGHT			272
+#define CONFIG_FRAMEBUFFER_ADDRESS(n)		reinterpret_cast<void *>(\
 	0xc0000000 + (n * sizeof(StaticFramebuffer<CONFIG_FRAMEBUFFER_WIDTH, CONFIG_FRAMEBUFFER_HEIGHT>)))
 
 #endif
