@@ -26,8 +26,8 @@ class MainScreen final : public Screen
 		float needleSpeed = 0.0f;
 
 		static constexpr const float NEEDLE_ACCELERATION = 0.1f;
-		static constexpr const float NEEDLE_MAX_SPEED = 1.0f;
-		static constexpr const float NEEDLE_MARGIN = 0.25f;
+		static constexpr const float NEEDLE_MAX_SPEED = 2.0f;
+		static constexpr const float NEEDLE_MARGIN = 0.1f;
 
 		static const unsigned int SPEEDOMETER_WIDTH = 85;
 

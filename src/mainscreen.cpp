@@ -96,7 +96,7 @@ void MainScreen::drawNeedle(Framebuffer & fb, float radiusInner, float radiusOut
 	const unsigned int centerX = (fb.getWidth() - 1) / 2;
 	const unsigned int centerY = fb.getHeight() - 1;
 
-	if(needleValue < 0.0f)
+	if(needleValue <= NEEDLE_MARGIN)
 		needleValue = 0.0f;
 	else if(needleValue >= CONFIG_GUI_MAXSPEED)
 		needleValue = CONFIG_GUI_MAXSPEED;
@@ -134,7 +134,7 @@ void MainScreen::drawText(Framebuffer & fb)
 	// Render the speed itself:
 	{
 		wchar_t textBuffer[10];
-		Strings::formatSpeedString(speed, textBuffer, CONFIG_GUI_LANGUAGE);
+		Strings::formatSpeedString(Sensor::get().getSpeed(), textBuffer, CONFIG_GUI_LANGUAGE);
 		const unsigned int x = centerX - font.getWidth(textBuffer) / 2;
 		font.render(fb, Point(x, speedNumberY), textBuffer);
 	}
@@ -149,7 +149,7 @@ void MainScreen::drawText(Framebuffer & fb)
 	// Render the distance itself:
 	{
 		wchar_t textBuffer[10];
-		Strings::formatDistanceString(distance, textBuffer, CONFIG_GUI_LANGUAGE);
+		Strings::formatDistanceString(Sensor::get().getDistance(), textBuffer, CONFIG_GUI_LANGUAGE);
 		const unsigned int x = centerX - font.getWidth(textBuffer) / 2;
 		font.render(fb, Point(x, distanceNumberY), textBuffer);
 	}
