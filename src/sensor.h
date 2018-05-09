@@ -6,49 +6,45 @@
 #define SENSOR_H
 
 extern "C" void TIM3_IRQHandler();
+extern "C" void TIM4_IRQHandler();
 extern "C" void EXTI15_10_IRQHandler();
-
-class SensorListener
-{
-	public:
-		virtual void onSpeedUpdated(float newSpeed) = 0;
-		virtual void onDistanceUpdated(float newDistance) = 0;
-	private:
-		SensorListener * next;
-
-	friend class Sensor;
-};
 
 class Sensor final
 {
 	public:
 		static Sensor & get();
 
-		float getSpeed();
-		float getDistance() const { return float(halfRevolutions) * WHEEL_CIRCUMFERENCE / 2.0f; }
+		float getSpeed() const { return speed; }
+		float getDistance() const { return float(revolutions) * WHEEL_CIRCUMFERENCE; }
 	private:
 		Sensor() : initialized(false) {}
 		void initialize();
 
 		void interrupt();
+		void timerInterrupt() { speedTimerOverflow = true; }
+		void timeout();
+
+		float calculateSpeedReduction() const;
 
 		// Current speed:
-		mutable float speed = 0.0f;
+		volatile float speed = 0.0f;
 
-		// Total number of half revolutions:
-		unsigned long halfRevolutions = 0;
+		// Total number of revolutions:
+		volatile unsigned long revolutions = 0;
 
-		// 10 Hz timer ticks:
-		unsigned long prevTimerTicks = 0;
-		unsigned long timerTicks = 0;
+		// The wheel speed timer has overflowed:
+		volatile bool speedTimerOverflow = false;
 
+		// Sensor initialized:
         bool initialized = false;
 
 		// Wheel circumference in meters:
-		static constexpr const float WHEEL_CIRCUMFERENCE = 2.4f;
-		static constexpr const float MIN_SPEED = 0.3f;
+		static constexpr const float WHEEL_CIRCUMFERENCE = 2.2f; // m
+		static constexpr const float MINIMUM_SPEED = 1.0f;       // m/s
+		static constexpr const float MAXIMUM_SPEED = 13.9f;      // m/s
 
 	friend void TIM3_IRQHandler();
+	friend void TIM4_IRQHandler();
 	friend void EXTI15_10_IRQHandler();
 };
 
