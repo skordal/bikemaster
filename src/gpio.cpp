@@ -68,14 +68,12 @@ void Controller::setAlternate(uint8_t pin, uint8_t alternate)
 	}
 }
 
-void Controller::set(uint8_t pin)
+void Controller::set(uint8_t pin, uint8_t value)
 {
-	memory(port)->BSRR = 1u << (GPIO_BSRR_BS_0 + pin);
-}
-
-void Controller::clear(uint8_t pin)
-{
-	memory(port)->BSRR = 1u << (GPIO_BSRR_BR_0 + pin);
+	if(value)
+		memory(port)->BSRR = 1u << (GPIO_BSRR_BS_0 + pin);
+	else
+		memory(port)->BSRR = 1u << (GPIO_BSRR_BR_0 + pin);
 }
 
 bool Controller::read(uint8_t pin)

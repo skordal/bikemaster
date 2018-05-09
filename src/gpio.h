@@ -47,8 +47,8 @@ namespace GPIO
 			void setPullMode(uint8_t pin, PullMode pull);
 			void setAlternate(uint8_t pin, uint8_t alternate);
 
-			void set(uint8_t pin);
-			void clear(uint8_t pin);
+			void set(uint8_t pin, uint8_t value = 1u);
+			void clear(uint8_t pin) { set(pin, 0); }
 			bool read(uint8_t pin);
 
 			Port port;
