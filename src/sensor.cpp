@@ -21,6 +21,16 @@ extern "C" void TIM4_IRQHandler()
 	Sensor::get().timerInterrupt();
 }
 
+extern "C" void EXTI2_IRQHandler()
+{
+	if(EXTI->PR & EXTI_PR_PR2)
+	{
+		Sensor::get().interrupt();
+		EXTI->PR |= EXTI_PR_PR2;
+		(void) EXTI->PR;
+	}
+}
+
 extern "C" void EXTI15_10_IRQHandler()
 {
 	if(EXTI->PR & EXTI_PR_PR11)
@@ -42,18 +52,26 @@ Sensor & Sensor::get()
 
 void Sensor::initialize()
 {
-	// PI11 is connected to the user button:
-	GPIO::Pin buttonPin(11, GPIO::Port::I);
+	// Configure the user button as sensor input (for debugging and development):
+	GPIO::Pin buttonPin(11, GPIO::Port::I); // PI11
 	buttonPin.setMode(GPIO::Mode::INPUT);
-
-	// Use the user button as a temporary sensor input:
 	RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
 	SYSCFG->EXTICR[2] = SYSCFG_EXTICR3_EXTI11_PI;
 	EXTI->RTSR |= EXTI_RTSR_TR11;
 	EXTI->IMR |= EXTI_IMR_IM11;
-
-	NVIC_SetPriority(EXTI15_10_IRQn, CONFIG_SENSOR_IRQ_PRIORITY);
+    NVIC_SetPriority(EXTI15_10_IRQn, CONFIG_SENSOR_IRQ_PRIORITY);
 	NVIC_EnableIRQ(EXTI15_10_IRQn);
+
+	// Configure the wheel sensor as sensor input:
+	GPIO::Pin sensorPin(2, GPIO::Port::I); // PI2
+	sensorPin.setMode(GPIO::Mode::INPUT);
+	sensorPin.setPullMode(GPIO::PullMode::PULL_UP);
+	RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
+	SYSCFG->EXTICR[0] = SYSCFG_EXTICR1_EXTI2_PI;
+	EXTI->FTSR |= EXTI_FTSR_TR2;
+	EXTI->IMR |= EXTI_IMR_IM2;
+	NVIC_SetPriority(EXTI2_IRQn, CONFIG_SENSOR_IRQ_PRIORITY);
+	NVIC_EnableIRQ(EXTI2_IRQn);
 
 	// Use timer 3 as timeout timer:
 	RCC->APB1ENR |= RCC_APB1ENR_TIM3EN;
@@ -78,6 +96,10 @@ void Sensor::initialize()
 
 void Sensor::interrupt()
 {
+	// Simple software debouncer:
+	if((TIM4->CR1 & TIM_CR1_CEN) && TIM4->CNT <= DEBOUNCE_COUNT)
+		return;
+
 	TIM3->CR1 &= ~TIM_CR1_CEN; // Stop the timeout timer
 	//TIM4->CR1 &= ~TIM_CR1_CEN; // Stop the timing timer
 

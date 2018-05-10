@@ -7,6 +7,7 @@
 
 extern "C" void TIM3_IRQHandler();
 extern "C" void TIM4_IRQHandler();
+extern "C" void EXTI2_IRQHandler();
 extern "C" void EXTI15_10_IRQHandler();
 
 class Sensor final
@@ -39,12 +40,14 @@ class Sensor final
         bool initialized = false;
 
 		// Wheel circumference in meters:
-		static constexpr const float WHEEL_CIRCUMFERENCE = 2.2f; // m
+		static constexpr const float WHEEL_CIRCUMFERENCE = 1.4f; // m
 		static constexpr const float MINIMUM_SPEED = 1.0f;       // m/s
 		static constexpr const float MAXIMUM_SPEED = 13.9f;      // m/s
+		static const unsigned int DEBOUNCE_COUNT = 250;
 
 	friend void TIM3_IRQHandler();
 	friend void TIM4_IRQHandler();
+	friend void EXTI2_IRQHandler();
 	friend void EXTI15_10_IRQHandler();
 };
 
