@@ -64,6 +64,7 @@ namespace GPIO
 			void setType(OutputType type) { controller().setOutputType(pin, type); }
 			void setSpeed(OutputSpeed speed) { controller().setOutputSpeed(pin, speed); }
 			void setAlternate(uint8_t alternate) { controller().setAlternate(pin, alternate); }
+			void setPullMode(PullMode pull) { controller().setPullMode(pin, pull); }
 
 			void set() { controller().set(pin); }
 			void clear() { controller().clear(pin); }
