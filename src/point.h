@@ -18,6 +18,8 @@ class Point
 		void setY(unsigned int y) { this->y = y; }
 
 		Point offset(unsigned int x, unsigned int y) const { return Point(this->x + x, this->y + y); }
+		Point offset(const Point & point) const { return Point(x + point.x, y + point.y); }
+		Point operator+(const Point & point) const { return offset(point); }
 	private:
 		unsigned int x, y;
 };
