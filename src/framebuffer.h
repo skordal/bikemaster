@@ -21,10 +21,36 @@ class Framebuffer
 		virtual Color * getBuffer() = 0;
 		virtual const Color * getBuffer() const = 0;
 
-		void setPixel(const Point & pos, const Color & color)
+		virtual void setPixel(const Point & pos, const Color & color)
 			{ getBuffer()[pos.getY() * getWidth() + pos.getX()] = color; }
-		const Color & getPixel(const Point & pos) const
+		virtual const Color & getPixel(const Point & pos) const
 			{ return getBuffer()[pos.getY() * getWidth() + pos.getX()]; }
+};
+
+class FramebufferViewport final : public Framebuffer
+{
+	public:
+		FramebufferViewport(Framebuffer & fb, const Point & offset, unsigned int width, unsigned int height)
+			: fb(fb), offset(offset), width(width), height(height) {}
+
+		unsigned int getWidth() const override { return width; }
+		unsigned int getHeight() const override { return height; }
+
+		Color * getBuffer() override { return fb.getBuffer(); }
+		const Color * getBuffer() const override { return fb.getBuffer(); }
+
+		void setPixel(const Point & pos, const Color & color) override
+			{ fb.setPixel(pos.offset(offset), color); }
+		virtual const Color & getPixel(const Point & pos) const override
+			{ return fb.getPixel(pos.offset(offset)); }
+
+		void setOffset(const Point & offset) { this->offset = offset; }
+		const Point & getOffset() const { return offset; }
+
+	private:
+		Framebuffer & fb;
+		Point offset;
+		unsigned int width, height;
 };
 
 template<unsigned int W, unsigned int H>
