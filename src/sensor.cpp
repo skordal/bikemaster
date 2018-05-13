@@ -110,7 +110,7 @@ void Sensor::interrupt()
         speedTimerOverflow = false;
 
 		speed = WHEEL_CIRCUMFERENCE / (TIM4->CNT / 2000.0f);
-		TIM3->ARR = TIM4->CNT + 2000U;
+		TIM3->ARR = TIM4->CNT + 1000U;
 	} else {
 		speed = 0.0f;
 		speedTimerOverflow = false;
