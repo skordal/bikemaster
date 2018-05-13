@@ -7,6 +7,7 @@
 
 #include "config.h"
 #include "font.h"
+#include "images.h"
 #include "mainscreen.h"
 #include "sensor.h"
 #include "strings.h"
@@ -17,6 +18,7 @@ using Utils::abs;
 const Color MainScreen::SPEEDOMETER_COLOR(255, 255, 255);
 const Color MainScreen::TICKMARK_COLOR(180, 180, 180);
 const Color MainScreen::NEEDLE_COLOR(255, 0, 0);
+const Color MainScreen::BUTTON_OUTLINE_COLOR(180, 180, 200);
 
 void MainScreen::animate()
 {
@@ -65,6 +67,7 @@ void MainScreen::render(Framebuffer & fb)
 	drawTickmarks(fb, float(radiusInner), float(radiusOuter));
 	drawNeedle(fb, float(radiusInner), float(radiusOuter));
 	drawText(fb);
+	drawButtons(fb);
 }
 
 void MainScreen::drawTickmarks(Framebuffer & fb, float radiusInner, float radiusOuter)
@@ -152,4 +155,32 @@ void MainScreen::drawText(Framebuffer & fb)
 		const unsigned int x = centerX - font.getWidth(textBuffer) / 2;
 		font.render(fb, Point(x, distanceNumberY), textBuffer);
 	}
+}
+
+void MainScreen::drawButtons(Framebuffer & fb)
+{
+	const float h = 0.707106781f; // sin(45) = cos(45) = h
+
+	const Point statisticsButtonOrigin(BUTTON_RADIUS + BUTTON_MARGIN, BUTTON_RADIUS + BUTTON_MARGIN);
+	const Point utilityButtonOrigin(fb.getWidth() - BUTTON_RADIUS - BUTTON_MARGIN,
+		BUTTON_RADIUS + BUTTON_MARGIN);
+
+	// Draw the button outlines:
+	Utils::drawCircle(fb, statisticsButtonOrigin, BUTTON_RADIUS, BUTTON_OUTLINE_COLOR);
+    Utils::drawCircle(fb, utilityButtonOrigin, BUTTON_RADIUS, BUTTON_OUTLINE_COLOR);
+
+	const Point imageOffsets[2]{
+		{statisticsButtonOrigin.getX() - static_cast<unsigned int>(h * BUTTON_RADIUS),
+			statisticsButtonOrigin.getY() - static_cast<unsigned int>(h * BUTTON_RADIUS)},
+		{utilityButtonOrigin.getX() - static_cast<unsigned int>(h * BUTTON_RADIUS),
+			utilityButtonOrigin.getY() - static_cast<unsigned int>(h * BUTTON_RADIUS)}
+	};
+
+	// Draw the statistics button graphic:
+	FramebufferViewport viewport(fb, imageOffsets[0], BUTTON_RADIUS * 2.0f * h, BUTTON_RADIUS * 2.0f * h);
+	Images::Buttons::statistics().render(viewport);
+
+	// Draw the utility button graphic:
+	viewport.setOffset(imageOffsets[1]);
+	Images::Buttons::utility().render(viewport);
 }

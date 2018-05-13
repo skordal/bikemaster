@@ -18,9 +18,10 @@ class MainScreen final : public Screen
 		void drawTickmarks(Framebuffer & fb, float radiusInner, float radiusOuter);
 		void drawNeedle(Framebuffer & fb, float radiusInner, float radiusOuter);
 		void drawText(Framebuffer & fb);
+		void drawButtons(Framebuffer & fb);
 
-		float distance = 0.0f;
-		float speed = 0.0f;
+		float distance = 0.0f; // m
+		float speed = 0.0f;    // km/h
 
 		float needleValue = 0.0f;
 		float needleSpeed = 0.0f;
@@ -34,6 +35,10 @@ class MainScreen final : public Screen
 		static const Color SPEEDOMETER_COLOR;
 		static const Color TICKMARK_COLOR;
 		static const Color NEEDLE_COLOR;
+
+		static const Color BUTTON_OUTLINE_COLOR;
+		static constexpr const float BUTTON_RADIUS = 30;
+		static const unsigned int BUTTON_MARGIN = 20;
 };
 
 #endif
