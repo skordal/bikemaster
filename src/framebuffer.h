@@ -13,8 +13,6 @@
 class Framebuffer
 {
 	public:
-		void clear(const Color & clearColor = Color::black());
-
 		virtual unsigned int getWidth() const = 0;
 		virtual unsigned int getHeight() const = 0;
 
