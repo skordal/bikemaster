@@ -144,3 +144,10 @@ void Utils::drawCircle(Framebuffer & fb, const Point & origin, unsigned int r, c
 	}
 }
 
+void Utils::fillRectangle(Framebuffer & fb, const Point & start, unsigned int width, unsigned int height,
+		const Color & color)
+{
+	for(unsigned int y = start.getY(); y < start.getY() + height; ++y)
+		for(unsigned int x = start.getX(); x < start.getX() + width; ++x)
+			fb.setPixel(Point(x, y), color);
+}

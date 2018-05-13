@@ -21,7 +21,9 @@ namespace Utils
     void drawCircle(Framebuffer & fb, const Point & origin, unsigned int r, const Color & color,
 		CircleDrawingMode mode = CircleDrawingMode::FULL);
 	void drawLine(Framebuffer & fb, const Point & start, const Point & end,
-			const Color & color);
+		const Color & color);
+	void fillRectangle(Framebuffer & fb, const Point & start, unsigned int width, unsigned int height,
+		const Color & color);
 
 	template<typename T> T abs(T value)
 	{
