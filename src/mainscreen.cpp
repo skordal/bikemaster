@@ -9,7 +9,6 @@
 #include "font.h"
 #include "mainscreen.h"
 #include "sensor.h"
-#include "statistics.h"
 #include "strings.h"
 #include "utils.h"
 
@@ -21,7 +20,7 @@ const Color MainScreen::NEEDLE_COLOR(255, 0, 0);
 
 void MainScreen::animate()
 {
-	speed = Sensor::get().getSpeed();
+	speed = Sensor::get().getSpeed() * 3.6f;
 	distance = Sensor::get().getDistance();
 
 	if(needleValue < speed - NEEDLE_MARGIN)
@@ -134,7 +133,7 @@ void MainScreen::drawText(Framebuffer & fb)
 	// Render the speed itself:
 	{
 		wchar_t textBuffer[10];
-		Strings::formatSpeedString(Sensor::get().getSpeed(), textBuffer, CONFIG_GUI_LANGUAGE);
+		Strings::formatSpeedString(speed, textBuffer, CONFIG_GUI_LANGUAGE);
 		const unsigned int x = centerX - font.getWidth(textBuffer) / 2;
 		font.render(fb, Point(x, speedNumberY), textBuffer);
 	}
