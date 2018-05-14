@@ -21,27 +21,6 @@ extern "C" void TIM4_IRQHandler()
 	Sensor::get().timerInterrupt();
 }
 
-extern "C" void EXTI2_IRQHandler()
-{
-	if(EXTI->PR & EXTI_PR_PR2)
-	{
-		Sensor::get().interrupt();
-		EXTI->PR |= EXTI_PR_PR2;
-		(void) EXTI->PR;
-	}
-}
-
-extern "C" void EXTI15_10_IRQHandler()
-{
-	if(EXTI->PR & EXTI_PR_PR11)
-	{
-		Sensor::get().interrupt();
-		EXTI->PR |= EXTI_PR_PR11;
-		(void) EXTI->PR;
-		//EXTI->IMR &= ~EXTI_IMR_IM11;
-	}
-}
-
 Sensor & Sensor::get()
 {
 	static Sensor sensor;

@@ -11,13 +11,6 @@
 #include "gui.h"
 #include "lcd.h"
 
-extern "C" void EXTI0_IRQHandler()
-{
-	GUI::get().renderAll();
-	EXTI->PR |= EXTI_PR_PR0;
-	(void) EXTI->PR;
-}
-
 extern "C" void TIM2_IRQHandler()
 {
 	if(TIM2->SR & TIM_SR_UIF)
