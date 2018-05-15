@@ -15,13 +15,13 @@ extern "C" void I2C3_EV_IRQHandler()
 {
 	if((I2C3->CR1 & I2C_CR1_RXIE) && (I2C3->ISR & I2C_ISR_RXNE))
 	{
-		Touchscreen::get().currentTransfer.buffer[1] = I2C3->RXDR;
+		Touchscreen::get().currentTransfer.setData(I2C3->RXDR);
 		I2C3->CR1 &= ~I2C_CR1_RXIE;
 	}
 
 	if((I2C3->CR1 & I2C_CR1_TXIE) && (I2C3->ISR & I2C_ISR_TXE))
 	{
-		I2C3->TXDR = Touchscreen::get().currentTransfer.buffer[1];
+		I2C3->TXDR = Touchscreen::get().currentTransfer.getData();
 		I2C3->CR1 &= ~I2C_CR1_TXIE;
 		I2C3->CR1 |= I2C_CR1_STOPIE;
 	}
@@ -112,70 +112,56 @@ void Touchscreen::configureTouch()
 
 void Touchscreen::interrupt()
 {
-	// Ignore an interrupt if we are currently processing the previous interrupt:
-	if(processingInterrupt)
-		return;
-	else
-		processingInterrupt = true;
-
 	// Procedure to get touch information:
 	auto touchCallback = [](uint8_t data) {
-		if(data == 0)
-			return;
-		else {
-			Touchscreen::get().readRegister(REGADDR_TOUCHXH, [](uint8_t data) {
-				Touchscreen::get().currentEvent.y = (data & 0xf) << 8;
-				Touchscreen::get().readRegister(REGADDR_TOUCHXL, [](uint8_t data) {
-					Touchscreen::get().currentEvent.y |= data;
-					Touchscreen::get().readRegister(REGADDR_TOUCHYH, [](uint8_t data) {
-						Touchscreen::get().currentEvent.x = (data & 0xf) << 8;
-						Touchscreen::get().readRegister(REGADDR_TOUCHYL, [](uint8_t data) {
-							Touchscreen::get().currentEvent.x |= data;
-							if(Touchscreen::get().listener != nullptr)
-								Touchscreen::get().listener->handleTouchscreenEvent(Touchscreen::get().currentEvent);
-							Touchscreen::get().processingInterrupt = false;
-						});
+		Touchscreen::get().readRegister(REGADDR_TOUCHXH, [](uint8_t data) {
+			Touchscreen::get().currentEvent.y = (data & 0xf) << 8;
+			Touchscreen::get().readRegister(REGADDR_TOUCHXL, [](uint8_t data) {
+				Touchscreen::get().currentEvent.y |= data;
+				Touchscreen::get().readRegister(REGADDR_TOUCHYH, [](uint8_t data) {
+					Touchscreen::get().currentEvent.x = (data & 0xf) << 8;
+					Touchscreen::get().readRegister(REGADDR_TOUCHYL, [](uint8_t data) {
+						Touchscreen::get().currentEvent.x |= data;
+						if(Touchscreen::get().listener != nullptr)
+							Touchscreen::get().listener->handleTouchscreenEvent(Touchscreen::get().currentEvent);
+                        EXTI->IMR |= EXTI_IMR_IM13;
 					});
 				});
 			});
-		}
+		});
 	};
 
 	// Gather information about the interrupt:
 	readRegister(REGADDR_STATUS, touchCallback);
 }
 
-bool Touchscreen::readRegister(uint8_t reg, void (*callback)(uint8_t))
+void Touchscreen::readRegister(uint8_t reg, void (*callback)(uint8_t))
 {
 	if(!transferActive)
 	{
+		transferActive = true;
+
 		currentTransfer.type = I2CTransfer::Type::READ;
         currentTransfer.setRegister(reg);
 		currentTransfer.readCallback = callback;
 
-		transferActive = true;
 		startTransfer();
-
-		return true;
-	} else
-		return false;
+	}
 }
 
-bool Touchscreen::writeRegister(uint8_t reg, uint8_t value, void (*callback)())
+void Touchscreen::writeRegister(uint8_t reg, uint8_t value, void (*callback)())
 {
 	if(!transferActive)
 	{
+		transferActive = true;
+
 		currentTransfer.type = I2CTransfer::Type::WRITE;
         currentTransfer.setRegister(reg);
 		currentTransfer.setData(value);
 		currentTransfer.writeCallback = callback;
 
-		transferActive = true;
 		startTransfer();
-
-		return true;
-	} else
-		return false;
+	}
 }
 
 void Touchscreen::startTransfer()

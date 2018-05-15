@@ -38,6 +38,7 @@ extern "C" void EXTI15_10_IRQHandler()
 	{
 		Touchscreen::get().interrupt();
 		EXTI->PR |= EXTI_PR_PR13;
+		EXTI->IMR &= ~EXTI_IMR_IM13; // Disable the interrupt until processing is complete
 		(void) EXTI->PR;
 	}
 

@@ -9,6 +9,9 @@
 
 struct TouchscreenEvent final
 {
+	unsigned int getX() const { return x; }
+	unsigned int getY() const { return y; }
+
 	unsigned int x, y;
 };
 
@@ -35,8 +38,8 @@ class Touchscreen final
 
 		void interrupt();
 
-		bool readRegister(uint8_t reg, void (*callback)(uint8_t data));
-		bool writeRegister(uint8_t reg, uint8_t value, void (*callback)());
+		void readRegister(uint8_t reg, void (*callback)(uint8_t data));
+		void writeRegister(uint8_t reg, uint8_t value, void (*callback)());
 		void startTransfer();
 		void finishTransfer();
 
@@ -65,7 +68,6 @@ class Touchscreen final
         I2CTransfer currentTransfer;
 		TouchscreenEvent currentEvent;
 		volatile bool transferActive = false;
-		volatile bool processingInterrupt = false;
 
 		static const uint8_t TOUCHSCREEN_ADDRESS = 0x70;
 		static const uint8_t REGADDR_STATUS = 0x02;
