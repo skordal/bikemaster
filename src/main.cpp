@@ -16,6 +16,7 @@
 #include "processor.h"
 #include "sdram.h"
 #include "sensor.h"
+#include "touchscreen.h"
 
 #include "initscreen.h"
 #include "mainscreen.h"
@@ -52,6 +53,9 @@ int main()
 
 	// Initialize the LCD:
 	LCD::get().enable();
+
+	// Initialize the touchscreen module:
+	Touchscreen::get().initialize();
 
 	// Initialize the GUI and show the initialization screen:
 	GUI::get().initialize(framebuffers);
