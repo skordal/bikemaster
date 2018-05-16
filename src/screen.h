@@ -6,12 +6,15 @@
 #define SCREEN_H
 
 #include "framebuffer.h"
+#include "touchscreen.h"
 
-class Screen
+class Screen : public TouchscreenListener
 {
 	public:
 		virtual void render(Framebuffer & fb) = 0;
 		virtual void animate() {};
+
+		virtual void handleTouchscreenEvent(const TouchscreenEvent & event) { (void) event; }
 		virtual Color getBackground() const { return Color::black(); }
 };
 
