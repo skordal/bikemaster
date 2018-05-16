@@ -5,6 +5,7 @@
 #ifndef MAINSCREEN_H
 #define MAINSCREEN_H
 
+#include "button.h"
 #include "color.h"
 #include "framebuffer.h"
 #include "screen.h"
@@ -12,6 +13,8 @@
 class MainScreen final : public Screen
 {
 	public:
+		MainScreen();
+
 		void animate() override;
 		void render(Framebuffer & fb) override;
 
@@ -28,6 +31,8 @@ class MainScreen final : public Screen
 		float needleValue = 0.0f;
 		float needleSpeed = 0.0f;
 
+		Button statsButton, tripButton;
+
 		static constexpr const float NEEDLE_ACCELERATION = 0.1f;
 		static constexpr const float NEEDLE_MAX_SPEED = 2.0f;
 		static constexpr const float NEEDLE_MARGIN = 0.1f;
@@ -37,9 +42,7 @@ class MainScreen final : public Screen
 		static const Color SPEEDOMETER_COLOR;
 		static const Color TICKMARK_COLOR;
 		static const Color NEEDLE_COLOR;
-		static const Color BUTTON_OUTLINE_COLOR;
 
-		static constexpr const float BUTTON_RADIUS = 30;
 		static const unsigned int BUTTON_MARGIN = 20;
 
 		static const Point STATISTICS_BUTTON_ORIGIN;

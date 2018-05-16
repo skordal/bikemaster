@@ -20,11 +20,18 @@ using Utils::abs;
 const Color MainScreen::SPEEDOMETER_COLOR(255, 255, 255);
 const Color MainScreen::TICKMARK_COLOR(180, 180, 180);
 const Color MainScreen::NEEDLE_COLOR(255, 0, 0);
-const Color MainScreen::BUTTON_OUTLINE_COLOR(180, 180, 200);
 
-const Point MainScreen::STATISTICS_BUTTON_ORIGIN(BUTTON_RADIUS + BUTTON_MARGIN, BUTTON_RADIUS + BUTTON_MARGIN);
-const Point MainScreen::TRIP_BUTTON_ORIGIN(480 - BUTTON_RADIUS - BUTTON_MARGIN,
-		BUTTON_RADIUS + BUTTON_MARGIN);
+const Point MainScreen::STATISTICS_BUTTON_ORIGIN(Button::RADIUS + BUTTON_MARGIN, Button::RADIUS + BUTTON_MARGIN);
+const Point MainScreen::TRIP_BUTTON_ORIGIN(480 - Button::RADIUS - BUTTON_MARGIN,
+		Button::RADIUS + BUTTON_MARGIN);
+
+MainScreen::MainScreen()
+	: statsButton(STATISTICS_BUTTON_ORIGIN, Images::Buttons::statisticsButton(),
+		[](void *){ GUI::get().setScreen(ScreenManager::get().getScreen(ScreenManager::Screen::STATS)); }),
+	  tripButton(TRIP_BUTTON_ORIGIN, Images::Buttons::tripButton(),
+		[](void *){ GUI::get().setScreen(ScreenManager::get().getScreen(ScreenManager::Screen::TRIP)); })
+{
+}
 
 void MainScreen::animate()
 {
@@ -78,23 +85,8 @@ void MainScreen::render(Framebuffer & fb)
 
 void MainScreen::handleTouchscreenEvent(const TouchscreenEvent & event)
 {
-	// Check if the click is within the statistics button:
-	if(event.getX() < STATISTICS_BUTTON_ORIGIN.getX() + BUTTON_RADIUS
-		&& event.getX() > STATISTICS_BUTTON_ORIGIN.getX() - BUTTON_RADIUS
-		&& event.getY() < STATISTICS_BUTTON_ORIGIN.getY() + BUTTON_RADIUS
-		&& event.getY() > STATISTICS_BUTTON_ORIGIN.getY() - BUTTON_RADIUS)
-	{
-		GUI::get().setScreen(ScreenManager::get().getScreen(ScreenManager::Screen::STATS));
-	}
-
-	// Check if the click is within the trip button:
-	if(event.getX() < TRIP_BUTTON_ORIGIN.getX() + BUTTON_RADIUS
-		&& event.getX() > TRIP_BUTTON_ORIGIN.getX() - BUTTON_RADIUS
-		&& event.getY() < TRIP_BUTTON_ORIGIN.getY() + BUTTON_RADIUS
-		&& event.getY() > TRIP_BUTTON_ORIGIN.getY() - BUTTON_RADIUS)
-	{
-		GUI::get().setScreen(ScreenManager::get().getScreen(ScreenManager::Screen::TRIP));
-	}
+	statsButton.handleTouchscreenEvent(event);
+	tripButton.handleTouchscreenEvent(event);
 }
 
 void MainScreen::drawTickmarks(Framebuffer & fb, float radiusInner, float radiusOuter)
@@ -186,24 +178,6 @@ void MainScreen::drawText(Framebuffer & fb)
 
 void MainScreen::drawButtons(Framebuffer & fb)
 {
-	const float h = 0.707106781f; // sin(45) = cos(45) = h
-
-	// Draw the button outlines:
-	Utils::drawCircle(fb, STATISTICS_BUTTON_ORIGIN, BUTTON_RADIUS, BUTTON_OUTLINE_COLOR);
-	Utils::drawCircle(fb, TRIP_BUTTON_ORIGIN, BUTTON_RADIUS, BUTTON_OUTLINE_COLOR);
-
-	const Point imageOffsets[2]{
-		{STATISTICS_BUTTON_ORIGIN.getX() - static_cast<unsigned int>(h * BUTTON_RADIUS),
-			STATISTICS_BUTTON_ORIGIN.getY() - static_cast<unsigned int>(h * BUTTON_RADIUS)},
-		{TRIP_BUTTON_ORIGIN.getX() - static_cast<unsigned int>(h * BUTTON_RADIUS),
-			TRIP_BUTTON_ORIGIN.getY() - static_cast<unsigned int>(h * BUTTON_RADIUS)}
-	};
-
-	// Draw the statistics button graphic:
-	FramebufferViewport viewport(fb, imageOffsets[0], BUTTON_RADIUS * 2.0f * h, BUTTON_RADIUS * 2.0f * h);
-	Images::Buttons::statisticsButton().render(viewport);
-
-	// Draw the trip button graphic:
-	viewport.setOffset(imageOffsets[1]);
-	Images::Buttons::tripButton().render(viewport);
+	statsButton.render(fb);
+	tripButton.render(fb);
 }
