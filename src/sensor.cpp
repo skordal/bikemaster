@@ -63,7 +63,7 @@ void Sensor::initialize()
 	RCC->APB1ENR |= RCC_APB1ENR_TIM4EN;
 	TIM4->DIER = TIM_DIER_UIE;
 	TIM4->PSC = 49999; // Provides a 2 kHz timer clock
-	TIM4->ARR = static_cast<unsigned int>((WHEEL_CIRCUMFERENCE / MINIMUM_SPEED) * 2000.0f);
+	TIM4->ARR = static_cast<unsigned int>(((WHEEL_DIAMETER * M_PI) / MINIMUM_SPEED) * 2000.0f);
 	NVIC_SetPriority(TIM4_IRQn, CONFIG_SENSOR_TIMER_IRQ_PRIORITY);
 	NVIC_EnableIRQ(TIM4_IRQn);
 
@@ -88,12 +88,12 @@ void Sensor::interrupt()
         TIM4->SR &= ~TIM_SR_UIF; // If the interrupt has just triggered, reset it.
         speedTimerOverflow = false;
 
-		speed = WHEEL_CIRCUMFERENCE / (TIM4->CNT / 2000.0f);
+		speed = (WHEEL_DIAMETER * M_PI) / (TIM4->CNT / 2000.0f);
 		TIM3->ARR = TIM4->CNT + 1000U;
 	} else {
 		speed = 0.0f;
 		speedTimerOverflow = false;
-		TIM3->ARR = static_cast<unsigned int>((WHEEL_CIRCUMFERENCE / MINIMUM_SPEED) * 1000.0f);
+		TIM3->ARR = static_cast<unsigned int>(((WHEEL_DIAMETER * M_PI) / MINIMUM_SPEED) * 1000.0f);
 	}
 
 	TIM3->CNT = 0;
@@ -116,7 +116,7 @@ void Sensor::timeout()
 	if(speed > MINIMUM_SPEED)
 	{
 		TIM3->CNT = 0;
-		TIM3->ARR = static_cast<unsigned int>((WHEEL_CIRCUMFERENCE / speed) * 2000.0f) + 1000U;
+		TIM3->ARR = static_cast<unsigned int>(((WHEEL_DIAMETER * M_PI) / speed) * 2000.0f) + 1000U;
         TIM3->CR1 = TIM_CR1_OPM | TIM_CR1_CEN;
 	} else
 		speed = 0.0f;

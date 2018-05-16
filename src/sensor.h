@@ -5,6 +5,8 @@
 #ifndef SENSOR_H
 #define SENSOR_H
 
+#include <cmath>
+
 extern "C" void TIM3_IRQHandler();
 extern "C" void TIM4_IRQHandler();
 extern "C" void EXTI2_IRQHandler();
@@ -16,7 +18,8 @@ class Sensor final
 		static Sensor & get();
 
 		float getSpeed() const { return speed; }
-		float getDistance() const { return float(revolutions) * WHEEL_CIRCUMFERENCE; }
+		float getDistance() const { return float(revolutions) * WHEEL_DIAMETER * M_PI; }
+		unsigned int getRevolutions() const { return revolutions; }
 	private:
 		Sensor() : initialized(false) {}
 		void initialize();
@@ -40,9 +43,9 @@ class Sensor final
         bool initialized = false;
 
 		// Wheel circumference in meters:
-		static constexpr const float WHEEL_CIRCUMFERENCE = 1.4f; // m
-		static constexpr const float MINIMUM_SPEED = 1.0f;       // m/s
-		static constexpr const float MAXIMUM_SPEED = 13.9f;      // m/s
+		static constexpr const float WHEEL_DIAMETER = 1.4f;	// m
+		static constexpr const float MINIMUM_SPEED = 1.0f;	// m/s
+		static constexpr const float MAXIMUM_SPEED = 13.9f;	// m/s
 		static const unsigned int DEBOUNCE_COUNT = 250;
 
 	friend void TIM3_IRQHandler();
