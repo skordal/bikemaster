@@ -112,8 +112,8 @@ void Touchscreen::configureTouch()
 
 void Touchscreen::interrupt()
 {
-	// Procedure to get touch information:
-	auto touchCallback = [](uint8_t data) {
+	// Gather information about the interrupt:
+	readRegister(REGADDR_STATUS, [](uint8_t data) {
 		Touchscreen::get().readRegister(REGADDR_TOUCHXH, [](uint8_t data) {
 			Touchscreen::get().currentEvent.y = (data & 0xf) << 8;
 			Touchscreen::get().readRegister(REGADDR_TOUCHXL, [](uint8_t data) {
@@ -129,10 +129,7 @@ void Touchscreen::interrupt()
 				});
 			});
 		});
-	};
-
-	// Gather information about the interrupt:
-	readRegister(REGADDR_STATUS, touchCallback);
+	});
 }
 
 void Touchscreen::readRegister(uint8_t reg, void (*callback)(uint8_t))
