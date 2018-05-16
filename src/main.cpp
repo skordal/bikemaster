@@ -19,8 +19,6 @@
 #include "sensor.h"
 #include "touchscreen.h"
 
-static Framebuffer * framebuffers[2];
-
 int main()
 {
 	Debug::stream() << "Bikemaster initializing..." << Debug::endl();
@@ -38,10 +36,9 @@ int main()
 	SDRAM::initialize();
 
 	// Create framebuffers in SDRAM:
-	framebuffers[0] = new (CONFIG_FRAMEBUFFER_ADDRESS(0))
-		StaticFramebuffer<CONFIG_FRAMEBUFFER_WIDTH, CONFIG_FRAMEBUFFER_HEIGHT>;
-    framebuffers[1] = new (CONFIG_FRAMEBUFFER_ADDRESS(1))
-		StaticFramebuffer<CONFIG_FRAMEBUFFER_WIDTH, CONFIG_FRAMEBUFFER_HEIGHT>;
+    Framebuffer * framebuffers[2]{
+		new (CONFIG_FRAMEBUFFER_ADDRESS(0)) StaticFramebuffer<CONFIG_FRAMEBUFFER_WIDTH, CONFIG_FRAMEBUFFER_HEIGHT>,
+		new (CONFIG_FRAMEBUFFER_ADDRESS(1)) StaticFramebuffer<CONFIG_FRAMEBUFFER_WIDTH, CONFIG_FRAMEBUFFER_HEIGHT>};
 
 	// Initialize the LCD:
 	LCD::get().enable();
