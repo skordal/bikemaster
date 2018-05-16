@@ -43,16 +43,16 @@ namespace Images
 			const unsigned int NUM_BARS = 4;
 	};
 
-    const Image & Buttons::statistics()
+    const Image & Buttons::statisticsButton()
 	{
 		static StatisticsButtonImage image;
 		return image;
 	}
 
-	class UtilityButtonImage final : public Image
+	class TripButtonImage final : public Image
 	{
 		public:
-			UtilityButtonImage() : Image() {}
+			TripButtonImage() : Image() {}
 
 			void render(Framebuffer & fb) const override
 			{
@@ -97,9 +97,9 @@ namespace Images
 			const unsigned int MARGIN = 8;
 	};
 
-	const Image & Buttons::utility()
+	const Image & Buttons::tripButton()
 	{
-		static UtilityButtonImage image;
+		static TripButtonImage image;
 		return image;
 	}
 }

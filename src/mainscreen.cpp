@@ -178,9 +178,9 @@ void MainScreen::drawButtons(Framebuffer & fb)
 
 	// Draw the statistics button graphic:
 	FramebufferViewport viewport(fb, imageOffsets[0], BUTTON_RADIUS * 2.0f * h, BUTTON_RADIUS * 2.0f * h);
-	Images::Buttons::statistics().render(viewport);
+	Images::Buttons::statisticsButton().render(viewport);
 
-	// Draw the utility button graphic:
+	// Draw the trip button graphic:
 	viewport.setOffset(imageOffsets[1]);
-	Images::Buttons::utility().render(viewport);
+	Images::Buttons::tripButton().render(viewport);
 }
