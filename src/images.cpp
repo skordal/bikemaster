@@ -7,6 +7,43 @@
 
 namespace Images
 {
+	class BackButtonImage final : public Image
+	{
+		public:
+			BackButtonImage() : Image() {}
+
+			void render(Framebuffer & fb) const override
+			{
+				const Point arrowPoint(MARGIN, fb.getHeight() / 2);
+				const Point arrowTop = arrowPoint.offset(ARROWHEAD_WIDTH, -(ARROWHEAD_HEIGHT / 2));
+				const Point arrowBottom = arrowPoint.offset(ARROWHEAD_WIDTH, ARROWHEAD_HEIGHT / 2);
+				const Point arrowShaftTop = arrowTop.offset(0, ARROWHEAD_HEIGHT / 4);
+				const Point arrowShaftBottom = arrowBottom.offset(0, -(ARROWHEAD_HEIGHT / 4));
+
+				Utils::drawLine(fb, arrowPoint, arrowTop, ARROW_COLOR);
+                Utils::drawLine(fb, arrowPoint, arrowBottom, ARROW_COLOR);
+				Utils::drawLine(fb, arrowTop, arrowShaftTop, ARROW_COLOR);
+				Utils::drawLine(fb, arrowBottom, arrowShaftBottom, ARROW_COLOR);
+				Utils::drawLine(fb, arrowShaftTop, Point(fb.getWidth() - MARGIN, arrowShaftTop.getY()), ARROW_COLOR);
+				Utils::drawLine(fb, arrowShaftBottom, Point(fb.getWidth() - MARGIN, arrowShaftBottom.getY()), ARROW_COLOR);
+				Utils::drawLine(fb,
+					Point(fb.getWidth() - MARGIN, arrowShaftTop.getY()),
+					Point(fb.getWidth() - MARGIN, arrowShaftBottom.getY()),
+					ARROW_COLOR);
+			}
+		private:
+			const unsigned int MARGIN = 4;
+			const unsigned int ARROWHEAD_WIDTH = 20;
+			const unsigned int ARROWHEAD_HEIGHT = 30;
+            const Color ARROW_COLOR = Color(180, 180, 180);
+	};
+
+	const Image & Buttons::backButton()
+	{
+		static BackButtonImage image;
+		return image;
+	}
+
 	class StatisticsButtonImage final : public Image
 	{
 		public:
@@ -43,7 +80,7 @@ namespace Images
 			const unsigned int NUM_BARS = 4;
 	};
 
-    const Image & Buttons::statisticsButton()
+	const Image & Buttons::statisticsButton()
 	{
 		static StatisticsButtonImage image;
 		return image;

@@ -14,6 +14,7 @@ namespace Images
 		public:
 			Buttons() = delete;
 
+			static const Image & backButton();
 			static const Image & statisticsButton();
 			static const Image & tripButton();
 		private:
