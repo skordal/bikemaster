@@ -114,6 +114,7 @@ void Touchscreen::interrupt()
 {
 	// Gather information about the interrupt:
 	readRegister(REGADDR_STATUS, [](uint8_t data) {
+		(void) data; // Data is unused for now, but contains the number of touched points.
 		Touchscreen::get().readRegister(REGADDR_TOUCHXH, [](uint8_t data) {
 			Touchscreen::get().currentEvent.y = (data & 0xf) << 8;
 			Touchscreen::get().readRegister(REGADDR_TOUCHXL, [](uint8_t data) {
