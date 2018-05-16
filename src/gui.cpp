@@ -71,6 +71,9 @@ void GUI::initialize(Framebuffer * framebuffers[2])
 	// Configure the DMA2D for use:
 	NVIC_SetPriority(DMA2D_IRQn, CONFIG_DMA2D_IRQ_PRIORITY);
 	NVIC_EnableIRQ(DMA2D_IRQn);
+
+	// Register as a touchscreen listener:
+	Touchscreen::get().setListener(this);
 }
 
 void GUI::update()
@@ -124,6 +127,12 @@ void GUI::onLCDUpdated()
 		DMA2D->NLR = backbuffer().getHeight() << DMA2D_NLR_NL_Pos | backbuffer().getWidth() << DMA2D_NLR_PL_Pos;
 		DMA2D->CR = DMA2D_CR_TCIE | DMA2D_CR_START | 3u << DMA2D_CR_MODE_Pos;
 	}
+}
+
+void GUI::handleTouchscreenEvent(const TouchscreenEvent & event)
+{
+	if(currentScreen != nullptr)
+		currentScreen->handleTouchscreenEvent(event);
 }
 
 void GUI::swapBuffers()

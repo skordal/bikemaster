@@ -8,12 +8,13 @@
 #include "framebuffer.h"
 #include "lcd.h"
 #include "screen.h"
+#include "touchscreen.h"
 
 extern "C" void EXTI0_IRQHandler();
 extern "C" void TIM2_IRQHandler();
 extern "C" void DMA2D_IRQHandler();
 
-class GUI final : private LCDUpdateListener
+class GUI final : private LCDUpdateListener, private TouchscreenListener
 {
 	public:
 		static GUI & get();
@@ -28,7 +29,8 @@ class GUI final : private LCDUpdateListener
 		void renderAll();
 		void animate();
 
-        void onLCDUpdated() override;
+		void onLCDUpdated() override;
+		void handleTouchscreenEvent(const TouchscreenEvent & event) override;
 
 		void swapBuffers();
 		Framebuffer & frontbuffer() { return *framebuffers[activeFramebuffer]; }
