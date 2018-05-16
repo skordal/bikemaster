@@ -14,18 +14,10 @@
 #include "gui.h"
 #include "lcd.h"
 #include "processor.h"
+#include "screenmanager.h"
 #include "sdram.h"
 #include "sensor.h"
 #include "touchscreen.h"
-
-#include "initscreen.h"
-#include "mainscreen.h"
-
-namespace Screens
-{
-	static InitScreen init;
-	static MainScreen main;
-};
 
 static Framebuffer * framebuffers[2];
 
@@ -59,14 +51,14 @@ int main()
 
 	// Initialize the GUI and show the initialization screen:
 	GUI::get().initialize(framebuffers);
-	GUI::get().setScreen(&Screens::init);
+	GUI::get().setScreen(ScreenManager::get().getScreen(ScreenManager::Screen::INIT));
 	GUI::get().update();
 
 	// Initialize the wheel sensor module:
 	Sensor::get();
 
 	// Switch to the main screen:
-	GUI::get().setScreen(&Screens::main);
+	GUI::get().setScreen(ScreenManager::get().getScreen(ScreenManager::Screen::MAIN));
 	GUI::get().update();
 
     // Turn on the status LED:
