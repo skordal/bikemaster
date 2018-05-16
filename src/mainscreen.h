@@ -14,6 +14,8 @@ class MainScreen final : public Screen
 	public:
 		void animate() override;
 		void render(Framebuffer & fb) override;
+
+		void handleTouchscreenEvent(const TouchscreenEvent & event) override;
 	private:
 		void drawTickmarks(Framebuffer & fb, float radiusInner, float radiusOuter);
 		void drawNeedle(Framebuffer & fb, float radiusInner, float radiusOuter);
@@ -35,10 +37,13 @@ class MainScreen final : public Screen
 		static const Color SPEEDOMETER_COLOR;
 		static const Color TICKMARK_COLOR;
 		static const Color NEEDLE_COLOR;
-
 		static const Color BUTTON_OUTLINE_COLOR;
+
 		static constexpr const float BUTTON_RADIUS = 30;
 		static const unsigned int BUTTON_MARGIN = 20;
+
+		static const Point STATISTICS_BUTTON_ORIGIN;
+		static const Point TRIP_BUTTON_ORIGIN;
 };
 
 #endif
