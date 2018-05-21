@@ -20,6 +20,11 @@ class Point
 		Point offset(int x, int y) const { return Point(this->x + x, this->y + y); }
 		Point offset(const Point & point) const { return Point(x + point.x, y + point.y); }
 		Point operator+(const Point & point) const { return offset(point); }
+
+		bool within(const Point & origin, unsigned int w, unsigned int h) const
+			{ return within(origin.getX(), origin.getY(), w, h); }
+		bool within(unsigned int x, unsigned int y, unsigned int w, unsigned int h) const
+			{ return (this->x >= x && this->x < x + w && this->y >= y && this->y < y + h); }
 	private:
 		unsigned int x, y;
 };
