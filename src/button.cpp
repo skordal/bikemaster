@@ -21,15 +21,3 @@ void Button::render(Framebuffer & fb)
 	FramebufferViewport viewport(fb, imageOffset, RADIUS * 2.0f * h, RADIUS * 2.0f * h);
 	image.render(viewport);
 }
-
-void Button::handleTouchscreenEvent(const TouchscreenEvent & event)
-{
-	if(callback != nullptr
-		&& event.getX() < origin.getX() + RADIUS
-		&& event.getX() > origin.getX() - RADIUS
-		&& event.getY() < origin.getY() + RADIUS
-		&& event.getY() > origin.getY() - RADIUS)
-	{
-		callback(data);
-	}
-}

@@ -10,7 +10,7 @@
 #include "point.h"
 #include "touchscreen.h"
 
-class Button final : public TouchscreenListener
+class Button final
 {
 	public:
 		static constexpr const float RADIUS = 30;
@@ -23,7 +23,6 @@ class Button final : public TouchscreenListener
 		const Point & getOrigin() const { return origin; }
 
 		void render(Framebuffer & fb);
-		void handleTouchscreenEvent(const TouchscreenEvent & event) override;
 
 		void trigger() const { if(callback != nullptr) callback(data); }
 	private:
