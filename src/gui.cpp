@@ -73,7 +73,7 @@ void GUI::initialize(Framebuffer * framebuffers[2])
 	NVIC_EnableIRQ(DMA2D_IRQn);
 
 	// Register as a touchscreen listener:
-	Touchscreen::get().setListener(this);
+	Touchscreen::get().addListener(this);
 }
 
 void GUI::update()

@@ -123,8 +123,12 @@ void Touchscreen::interrupt()
 					Touchscreen::get().currentEvent.setX((data & 0xf) << 8);
 					Touchscreen::get().readRegister(REGADDR_TOUCHYL, [](uint8_t data) {
 						Touchscreen::get().currentEvent.setX(Touchscreen::get().currentEvent.getX() | data);
-						if(Touchscreen::get().listener != nullptr)
-							Touchscreen::get().listener->handleTouchscreenEvent(Touchscreen::get().currentEvent);
+						TouchscreenListener * listener = Touchscreen::get().getListeners();
+						while(listener != nullptr)
+						{
+							listener->handleTouchscreenEvent(Touchscreen::get().currentEvent);
+							listener = static_cast<TouchscreenListener *>(listener->getNext());
+						}
                         EXTI->IMR |= EXTI_IMR_IM13;
 					});
 				});

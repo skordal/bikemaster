@@ -6,13 +6,15 @@
 #define TOUCHSCREEN_H
 
 #include <cstdint>
+
+#include "listener.h"
 #include "point.h"
 
 class TouchscreenEvent final : public Point
 {
 };
 
-class TouchscreenListener
+class TouchscreenListener : public Listener
 {
 	public:
 		virtual void handleTouchscreenEvent(const TouchscreenEvent & event) = 0;
@@ -21,13 +23,11 @@ class TouchscreenListener
 extern "C" void EXTI15_10_IRQHandler();
 extern "C" void I2C3_EV_IRQHandler();
 
-class Touchscreen final
+class Touchscreen final : public Listenable<TouchscreenListener>
 {
 	public:
 		static Touchscreen & get();
 		static void initialize();
-
-		void setListener(TouchscreenListener * listener) { this->listener = listener; }
 	private:
 		void initializeGPIO();
 		void initializeI2C();
@@ -59,8 +59,6 @@ class Touchscreen final
 				void (*writeCallback)();
 			};
 		};
-
-		TouchscreenListener * listener = nullptr;
 
         I2CTransfer currentTransfer;
 		TouchscreenEvent currentEvent;
