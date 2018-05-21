@@ -108,23 +108,9 @@ namespace Images
 				Utils::drawLine(fb, wheels[1], frameEnd, bikeColor);
 				Utils::drawLine(fb, frameStart, frameEnd, bikeColor);
 
-#if 0
-				// Draw the package holder:
-				Utils::drawLine(fb, frameStart, frameStart.offset(-WHEEL_RADIUS, 0), bikeColor);
-				Utils::drawLine(fb, frameStart.offset(-WHEEL_RADIUS, 0),
-					frameStart.offset(-WHEEL_RADIUS - (WHEEL_RADIUS / 2), 2), bikeColor);
-#endif
-
 				// Draw the handlebar
 				Utils::drawLine(fb, frameEnd, frameEnd.offset(0, -6), bikeColor);
 				Utils::drawLine(fb, frameEnd.offset(0, -6), frameEnd.offset(-6, -6), bikeColor);
-
-#if 0
-				// Draw the seat:
-				const Point seatStart(frameEnd.getX() - frameStart.getX(), frameEnd.getY());
-				Utils::drawLine(fb, seatStart, seatStart.offset(0, -5), bikeColor);
-				Utils::drawLine(fb, seatStart.offset(-2, -5), seatStart.offset(5, -5), bikeColor);
-#endif
 			}
 
 		private:
