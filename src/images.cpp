@@ -10,8 +10,6 @@ namespace Images
 	class BackButtonImage final : public Image
 	{
 		public:
-			BackButtonImage() : Image() {}
-
 			void render(Framebuffer & fb) const override
 			{
 				const Point arrowPoint(MARGIN, fb.getHeight() / 2);
@@ -47,8 +45,6 @@ namespace Images
 	class StatisticsButtonImage final : public Image
 	{
 		public:
-			StatisticsButtonImage() : Image() {}
-
 			void render(Framebuffer & fb) const override
 			{
 				// Draw the coordinate system:
@@ -89,8 +85,6 @@ namespace Images
 	class TripButtonImage final : public Image
 	{
 		public:
-			TripButtonImage() : Image() {}
-
 			void render(Framebuffer & fb) const override
 			{
 				// Draw the bike wheels:
