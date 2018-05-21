@@ -25,10 +25,11 @@ void Screen::renderButtons(Framebuffer & fb) const
 			button->render(fb);
 }
 
-void Screen::addButton(unsigned int slot, Button * button)
+void Screen::setButton(unsigned int slot, Button * button)
 {
 	buttonSlots[slot] = button;
-	button->setOrigin(getButtonOrigin(slot));
+	if(button != nullptr)
+		button->setOrigin(getButtonOrigin(slot));
 }
 
 Point Screen::getButtonOrigin(unsigned int slot) const

@@ -25,8 +25,7 @@ class MainScreen final : public Screen, private SensorListener
 
 		void handleSpeedChanged(float speed) override { this->speed = speed * 3.6f; }
 
-		float speed = 0.0f;    // km/h
-
+		float speed = 0.0f; // km/h
 		float needleValue = 0.0f;
 		float needleSpeed = 0.0f;
 

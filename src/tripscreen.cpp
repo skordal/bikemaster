@@ -12,7 +12,7 @@ TripScreen::TripScreen()
 	: backButton(Images::Buttons::backButton(),
 		[](void *){ GUI::get().setScreen(ScreenManager::get().getScreen(ScreenManager::Screen::MAIN));})
 {
-	addButton(0, &backButton);
+	setButton(0, &backButton);
 }
 
 void TripScreen::render(Framebuffer & fb)

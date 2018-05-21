@@ -20,9 +20,7 @@ class Screen : public TouchscreenListener
 	protected:
 		void renderButtons(Framebuffer & fb) const;
 
-		void addButton(unsigned int slot, Button * button);
-		void removeButton(unsigned int slot) { buttonSlots[slot] = nullptr; }
-
+		void setButton(unsigned int slot, Button * button);
 		Point getButtonOrigin(unsigned int slot) const;
 
 		static const unsigned int BUTTON_MARGIN = 20;   // Pixels on either side of the button row.

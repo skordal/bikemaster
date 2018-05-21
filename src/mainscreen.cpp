@@ -27,8 +27,8 @@ MainScreen::MainScreen()
 	  tripButton(Images::Buttons::tripButton(),
 		[](void *){ GUI::get().setScreen(ScreenManager::get().getScreen(ScreenManager::Screen::TRIP)); })
 {
-	addButton(0, &statsButton);
-	addButton(5, &tripButton);
+	setButton(0, &statsButton);
+	setButton(5, &tripButton);
 
 	Sensor::get().addListener(this);
 }
