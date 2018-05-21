@@ -102,7 +102,7 @@ void Sensor::interrupt()
 	TIM4->CNT = 0;
 	TIM4->CR1 = TIM_CR1_OPM | TIM_CR1_CEN;
 
-	++revolutions;
+	callListeners(speed, true);
 }
 
 void Sensor::timeout()
@@ -121,10 +121,23 @@ void Sensor::timeout()
 	} else
 		speed = 0.0f;
 
+	callListeners(speed, false);
 	EXTI->IMR |= EXTI_IMR_IM11;
 }
 
 float Sensor::calculateSpeedReduction() const
 {
 	return speed * 0.9f;
+}
+
+void Sensor::callListeners(float newSpeed, bool revolution) const
+{
+	SensorListener * listener = getListeners();
+	while(listener != nullptr)
+	{
+		listener->handleSpeedChanged(newSpeed);
+		if(revolution)
+			listener->handleWheelRevolution();
+		listener = (SensorListener *) listener->getNext();
+	}
 }

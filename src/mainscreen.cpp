@@ -11,8 +11,8 @@
 #include "images.h"
 #include "mainscreen.h"
 #include "screenmanager.h"
-#include "sensor.h"
 #include "strings.h"
+#include "trip.h"
 #include "utils.h"
 
 using Utils::abs;
@@ -29,13 +29,12 @@ MainScreen::MainScreen()
 {
 	addButton(0, &statsButton);
 	addButton(5, &tripButton);
+
+	Sensor::get().addListener(this);
 }
 
 void MainScreen::animate()
 {
-	speed = Sensor::get().getSpeed() * 3.6f;
-	distance = Sensor::get().getDistance();
-
 	if(needleValue < speed - NEEDLE_MARGIN)
 	{
 		if(needleSpeed > 0.0f && needleSpeed < NEEDLE_MAX_SPEED)
@@ -163,7 +162,7 @@ void MainScreen::drawText(Framebuffer & fb)
 	// Render the distance itself:
 	{
 		wchar_t textBuffer[10];
-		Strings::formatDistanceString(Sensor::get().getDistance(), textBuffer, CONFIG_GUI_LANGUAGE);
+		Strings::formatDistanceString(Trip::get().getRevolutions() * Sensor::get().getWheelDiameter(), textBuffer, CONFIG_GUI_LANGUAGE);
 		const unsigned int x = centerX - font.getWidth(textBuffer) / 2;
 		font.render(fb, Point(x, distanceNumberY), textBuffer);
 	}

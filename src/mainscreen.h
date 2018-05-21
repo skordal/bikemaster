@@ -9,8 +9,9 @@
 #include "color.h"
 #include "framebuffer.h"
 #include "screen.h"
+#include "sensor.h"
 
-class MainScreen final : public Screen
+class MainScreen final : public Screen, private SensorListener
 {
 	public:
 		MainScreen();
@@ -22,7 +23,8 @@ class MainScreen final : public Screen
 		void drawNeedle(Framebuffer & fb, float radiusInner, float radiusOuter);
 		void drawText(Framebuffer & fb);
 
-		float distance = 0.0f; // m
+		void handleSpeedChanged(float speed) override { this->speed = speed * 3.6f; }
+
 		float speed = 0.0f;    // km/h
 
 		float needleValue = 0.0f;
