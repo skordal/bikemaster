@@ -144,8 +144,17 @@ void Utils::drawCircle(Framebuffer & fb, const Point & origin, unsigned int r, c
 	}
 }
 
+void Utils::drawRectangle(Framebuffer & fb, const Point & start, unsigned int width, unsigned int height,
+	const Color & color)
+{
+	drawLine(fb, start, start.offset(width, 0), color);
+	drawLine(fb, start.offset(width, 0), start.offset(width, height), color);
+	drawLine(fb, start.offset(0, height), start.offset(width, height), color);
+	drawLine(fb, start, start.offset(0, height), color);
+}
+
 void Utils::fillRectangle(Framebuffer & fb, const Point & start, unsigned int width, unsigned int height,
-		const Color & color)
+	const Color & color)
 {
 	for(unsigned int y = start.getY(); y < start.getY() + height; ++y)
 		for(unsigned int x = start.getX(); x < start.getX() + width; ++x)

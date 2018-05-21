@@ -22,6 +22,8 @@ namespace Utils
 		CircleDrawingMode mode = CircleDrawingMode::FULL);
 	void drawLine(Framebuffer & fb, const Point & start, const Point & end,
 		const Color & color);
+	void drawRectangle(Framebuffer & fb, const Point & start, unsigned int width, unsigned int height,
+		const Color & color);
 	void fillRectangle(Framebuffer & fb, const Point & start, unsigned int width, unsigned int height,
 		const Color & color);
 
