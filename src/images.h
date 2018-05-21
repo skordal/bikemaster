@@ -9,16 +9,12 @@
 
 namespace Images
 {
-	class Buttons final
+	namespace Buttons
 	{
-		public:
-			Buttons() = delete;
-
-			static const Image & backButton();
-			static const Image & statisticsButton();
-			static const Image & tripButton();
-		private:
-	};
+			const Image & backButton();
+			const Image & statisticsButton();
+			const Image & tripButton();
+	}
 }
 
 #endif
