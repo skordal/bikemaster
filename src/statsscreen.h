@@ -10,7 +10,11 @@
 class StatsScreen final : public Screen
 {
 	public:
+		StatsScreen();
+
 		void render(Framebuffer & fb) override;
+	private:
+		Button backButton;
 };
 
 #endif
