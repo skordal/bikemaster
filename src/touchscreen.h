@@ -6,13 +6,10 @@
 #define TOUCHSCREEN_H
 
 #include <cstdint>
+#include "point.h"
 
-struct TouchscreenEvent final
+class TouchscreenEvent final : public Point
 {
-	unsigned int getX() const { return x; }
-	unsigned int getY() const { return y; }
-
-	unsigned int x, y;
 };
 
 class TouchscreenListener

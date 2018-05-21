@@ -21,16 +21,14 @@ const Color MainScreen::SPEEDOMETER_COLOR(255, 255, 255);
 const Color MainScreen::TICKMARK_COLOR(180, 180, 180);
 const Color MainScreen::NEEDLE_COLOR(255, 0, 0);
 
-const Point MainScreen::STATISTICS_BUTTON_ORIGIN(Button::RADIUS + BUTTON_MARGIN, Button::RADIUS + BUTTON_MARGIN);
-const Point MainScreen::TRIP_BUTTON_ORIGIN(480 - Button::RADIUS - BUTTON_MARGIN,
-		Button::RADIUS + BUTTON_MARGIN);
-
 MainScreen::MainScreen()
-	: statsButton(STATISTICS_BUTTON_ORIGIN, Images::Buttons::statisticsButton(),
+	: statsButton(Images::Buttons::statisticsButton(),
 		[](void *){ GUI::get().setScreen(ScreenManager::get().getScreen(ScreenManager::Screen::STATS)); }),
-	  tripButton(TRIP_BUTTON_ORIGIN, Images::Buttons::tripButton(),
+	  tripButton(Images::Buttons::tripButton(),
 		[](void *){ GUI::get().setScreen(ScreenManager::get().getScreen(ScreenManager::Screen::TRIP)); })
 {
+	addButton(0, &statsButton);
+	addButton(5, &tripButton);
 }
 
 void MainScreen::animate()
@@ -80,13 +78,8 @@ void MainScreen::render(Framebuffer & fb)
 	drawTickmarks(fb, float(radiusInner), float(radiusOuter));
 	drawNeedle(fb, float(radiusInner), float(radiusOuter));
 	drawText(fb);
-	drawButtons(fb);
-}
 
-void MainScreen::handleTouchscreenEvent(const TouchscreenEvent & event)
-{
-	statsButton.handleTouchscreenEvent(event);
-	tripButton.handleTouchscreenEvent(event);
+	renderButtons(fb);
 }
 
 void MainScreen::drawTickmarks(Framebuffer & fb, float radiusInner, float radiusOuter)
@@ -174,10 +167,4 @@ void MainScreen::drawText(Framebuffer & fb)
 		const unsigned int x = centerX - font.getWidth(textBuffer) / 2;
 		font.render(fb, Point(x, distanceNumberY), textBuffer);
 	}
-}
-
-void MainScreen::drawButtons(Framebuffer & fb)
-{
-	statsButton.render(fb);
-	tripButton.render(fb);
 }

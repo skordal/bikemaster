@@ -116,13 +116,13 @@ void Touchscreen::interrupt()
 	readRegister(REGADDR_STATUS, [](uint8_t data) {
 		(void) data; // Data is unused for now, but contains the number of touched points.
 		Touchscreen::get().readRegister(REGADDR_TOUCHXH, [](uint8_t data) {
-			Touchscreen::get().currentEvent.y = (data & 0xf) << 8;
+			Touchscreen::get().currentEvent.setY((data & 0xf) << 8);
 			Touchscreen::get().readRegister(REGADDR_TOUCHXL, [](uint8_t data) {
-				Touchscreen::get().currentEvent.y |= data;
+				Touchscreen::get().currentEvent.setY(Touchscreen::get().currentEvent.getY() | data);
 				Touchscreen::get().readRegister(REGADDR_TOUCHYH, [](uint8_t data) {
-					Touchscreen::get().currentEvent.x = (data & 0xf) << 8;
+					Touchscreen::get().currentEvent.setX((data & 0xf) << 8);
 					Touchscreen::get().readRegister(REGADDR_TOUCHYL, [](uint8_t data) {
-						Touchscreen::get().currentEvent.x |= data;
+						Touchscreen::get().currentEvent.setX(Touchscreen::get().currentEvent.getX() | data);
 						if(Touchscreen::get().listener != nullptr)
 							Touchscreen::get().listener->handleTouchscreenEvent(Touchscreen::get().currentEvent);
                         EXTI->IMR |= EXTI_IMR_IM13;
