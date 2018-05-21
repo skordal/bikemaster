@@ -13,7 +13,11 @@ namespace Images
 	{
 			const Image & backButton();
 			const Image & statisticsButton();
+
 			const Image & tripButton();
+			const Image & tripStartButton();
+			const Image & tripPauseButton();
+			const Image & tripResetButton();
 	}
 }
 

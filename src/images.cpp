@@ -119,4 +119,73 @@ namespace Images
 		static TripButtonImage image;
 		return image;
 	}
+
+	class TripStartButtonImage final : public Image
+	{
+		public:
+			void render(Framebuffer & fb) const override
+			{
+				const Point arrowPoint(fb.getWidth(), (fb.getHeight() / 2) + 1);
+				const Point arrowTop(MARGIN, MARGIN);
+				const Point arrowBottom(MARGIN, fb.getHeight() - MARGIN);
+
+				Utils::drawLine(fb, arrowTop, arrowPoint, ARROW_COLOR);
+				Utils::drawLine(fb, arrowTop, arrowBottom, ARROW_COLOR);
+				Utils::drawLine(fb, arrowBottom, arrowPoint, ARROW_COLOR);
+			}
+		private:
+			const unsigned int MARGIN = 4;
+            const Color ARROW_COLOR = Color(180, 180, 180);
+	};
+
+	const Image & Buttons::tripStartButton()
+	{
+		static TripStartButtonImage image;
+		return image;
+	}
+
+	class TripPauseButtonImage final : public Image
+	{
+		public:
+			void render(Framebuffer & fb) const override
+			{
+				const Point origins[2]{
+					{MARGIN, MARGIN},
+					{MARGIN + (fb.getWidth() / 2), MARGIN},
+				};
+
+				Utils::drawRectangle(fb, origins[0], (fb.getWidth() - 4 * MARGIN) / 2,
+					(fb.getHeight() - 2 * MARGIN), Color(180, 180, 180));
+				Utils::drawRectangle(fb, origins[1], (fb.getWidth() - 4 * MARGIN) / 2,
+					(fb.getHeight() - 2 * MARGIN), Color(180, 180, 180));
+			}
+		private:
+			const unsigned int MARGIN = 4;
+	};
+
+	const Image & Buttons::tripPauseButton()
+	{
+		static TripPauseButtonImage image;
+		return image;
+	}
+
+	class TripResetButtonImage final : public Image
+	{
+		public:
+			void render(Framebuffer & fb) const override
+			{
+				Utils::drawLine(fb, Point(MARGIN, MARGIN), Point(fb.getWidth() - MARGIN, fb.getHeight() - MARGIN),
+					Color(220, 0, 0));
+				Utils::drawLine(fb, Point(MARGIN, fb.getHeight() - MARGIN), Point(fb.getWidth() - MARGIN, MARGIN),
+					Color(220, 0, 0));
+			}
+		private:
+			const unsigned int MARGIN = 4;
+	};
+
+	const Image & Buttons::tripResetButton()
+	{
+		static TripResetButtonImage image;
+		return image;
+	}
 }
