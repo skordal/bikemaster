@@ -5,6 +5,7 @@
 #ifndef STRINGS_H
 #define STRINGS_H
 
+#include "config.h"
 #include "lut.h"
 
 class Strings final
@@ -26,9 +27,9 @@ class Strings final
 			DISTANCE_UNIT,
 		};
 
-		static const wchar_t * get(ID id, Language language);
-		static void formatSpeedString(float speed, wchar_t * buffer, Strings::Language language);
-		static void formatDistanceString(float speed, wchar_t * buffer, Strings::Language language);
+		static const wchar_t * get(ID id, Language language = CONFIG_GUI_LANGUAGE);
+		static void formatSpeedString(float speed, wchar_t * buffer, Strings::Language language = CONFIG_GUI_LANGUAGE);
+		static void formatDistanceString(float speed, wchar_t * buffer, Strings::Language language = CONFIG_GUI_LANGUAGE);
 };
 
 #endif
