@@ -34,15 +34,15 @@ extern "C" void EXTI2_IRQHandler()
 // 13 - touchscreen interrupt
 extern "C" void EXTI15_10_IRQHandler()
 {
-	if(EXTI->PR & EXTI_PR_PR13)
+	if((EXTI->IMR & EXTI_IMR_IM13) && (EXTI->PR & EXTI_PR_PR13))
 	{
+		EXTI->IMR &= ~EXTI_IMR_IM13; // Disable the interrupt until processing is complete
 		Touchscreen::get().interrupt();
 		EXTI->PR |= EXTI_PR_PR13;
-		EXTI->IMR &= ~EXTI_IMR_IM13; // Disable the interrupt until processing is complete
 		(void) EXTI->PR;
 	}
 
-	if(EXTI->PR & EXTI_PR_PR11)
+	if((EXTI->IMR & EXTI_IMR_IM11) && (EXTI->PR & EXTI_PR_PR11))
 	{
 		Sensor::get().interrupt();
 		EXTI->PR |= EXTI_PR_PR11;
