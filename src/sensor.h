@@ -48,7 +48,7 @@ class Sensor final : public Listenable<SensorListener>
         bool initialized = false;
 
 		// Wheel circumference in meters:
-		static constexpr const float WHEEL_DIAMETER = 1.4f;	// m
+		static constexpr const float WHEEL_DIAMETER = 0.7f;	// m
 		static constexpr const float MINIMUM_SPEED = 1.0f;	// m/s
 		static constexpr const float MAXIMUM_SPEED = 13.9f;	// m/s
 		static const unsigned int DEBOUNCE_COUNT = 250;
