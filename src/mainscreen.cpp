@@ -35,25 +35,23 @@ MainScreen::MainScreen()
 
 void MainScreen::animate()
 {
-	if(needleValue < speed - NEEDLE_MARGIN)
+	if(needleValue < speed - NEEDLE_MARGIN || needleValue > speed + NEEDLE_MARGIN)
 	{
 		if(needleSpeed > 0.0f && needleSpeed < NEEDLE_MAX_SPEED)
 			needleSpeed += NEEDLE_ACCELERATION;
-		else
+		else if(needleSpeed == 0.0f)
 			needleSpeed = NEEDLE_ACCELERATION;
+	}
 
+	if(needleValue < speed - NEEDLE_MARGIN)
+	{
 		if(needleValue + needleSpeed > speed)
 			needleValue = speed;
 		else
 			needleValue += needleSpeed;
 	} else if(needleValue > speed + NEEDLE_MARGIN)
 	{
-		if(needleSpeed < 0.0f && needleSpeed > -NEEDLE_MAX_SPEED)
-			needleSpeed -= NEEDLE_ACCELERATION;
-		else
-			needleSpeed = NEEDLE_ACCELERATION;
-
-		if(needleValue - needleSpeed < speed || needleValue - needleSpeed <= 0.0f)
+		if(needleValue - needleSpeed < speed)
 			needleValue = speed;
 		else
 			needleValue -= needleSpeed;
