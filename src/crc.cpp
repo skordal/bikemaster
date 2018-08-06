@@ -18,5 +18,6 @@ uint32_t crc32(const uint32_t * data, unsigned int size)
 	for(unsigned int i = 0; i < size; ++i)
 		CRC->DR = data[i];
 
+	__DSB();
 	return CRC->DR;
 }
